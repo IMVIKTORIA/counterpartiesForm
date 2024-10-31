@@ -1,0 +1,10 @@
+.custom-input-date {
+	position: relative;
+
+	&__picker {
+		position: absolute;
+		visibility: hidden;
+		height: 100%;
+		width: 100%;
+	}
+}

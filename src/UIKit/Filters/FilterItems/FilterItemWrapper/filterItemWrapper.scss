@@ -1,0 +1,39 @@
+.filter-item-wrapper {
+	&__header {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		cursor: pointer;
+		padding: 3px;
+		border-radius: 7px;
+
+		&:hover {
+			background-color: #eeeeee;
+		}
+	}
+
+	&__title {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 130%;
+		display: flex;
+		align-items: center;
+		letter-spacing: 0.0025em;
+		color: #6b6b6f;
+		flex: none;
+		order: 0;
+		flex-grow: 1;
+	}
+
+	&__arrow {
+		&_open {
+			transform: rotate(180deg);
+		}
+	}
+
+	&__content {
+		padding: 8px 3px 0 3px;
+	}
+}

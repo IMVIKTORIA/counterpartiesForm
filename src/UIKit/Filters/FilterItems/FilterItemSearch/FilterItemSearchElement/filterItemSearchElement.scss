@@ -1,0 +1,25 @@
+.search-element {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	gap: 12px;
+
+	&__name {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 130%;
+		display: flex;
+		align-items: center;
+		letter-spacing: 0.0025em;
+		color: #2d2d2f;
+	}
+
+	&__close-button {
+		cursor: pointer;
+		&:active {
+			opacity: 0.8;
+		}
+	}
+}

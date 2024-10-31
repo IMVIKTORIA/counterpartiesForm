@@ -1,0 +1,43 @@
+.custom-list-row-column {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+
+	height: 100%;
+	overflow: hidden;
+
+	& > span {
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 130%;
+		letter-spacing: 0.0025em;
+	}
+
+	&__link {
+		& > span {
+			cursor: pointer;
+			font-family: 'Inter';
+			font-style: normal;
+			font-weight: 600;
+			font-size: 14px;
+			line-height: 130%;
+			letter-spacing: 0.0025em;
+			color: #4588e5;
+		}
+
+		& > span:hover {
+			border-bottom: 2px solid #4588e5;
+			margin-top: 2px;
+		}
+
+		& > span:active {
+			opacity: 0.6;
+		}
+	}
+}

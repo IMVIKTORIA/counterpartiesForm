@@ -1,0 +1,23 @@
+.tab-selector-item {
+	cursor: pointer;
+	color: var(--mp-header-color);
+	user-select: none;
+	color: #666;
+	font-family: Inter;
+	font-size: 19px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	letter-spacing: 0.038px;
+	padding: 5px 24px;
+	border-radius: 10px 10px 0 0;
+	display: flex;
+	flex-direction: row;
+
+	&_active {
+		color: white;
+		background-color: var(--medpult-blue-active-color);
+		font-weight: 600;
+		position: relative;
+	}
+}

@@ -1,0 +1,19 @@
+.custom-checkbox {
+	display: flex;
+	gap: 8px;
+	cursor: pointer;
+	&__label {
+		word-break: break-word;
+		width: 100%;
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 130%;
+		letter-spacing: 0.0025em;
+		color: #2d2d2f;
+		flex: none;
+		order: 1;
+		flex-grow: 0;
+	}
+}

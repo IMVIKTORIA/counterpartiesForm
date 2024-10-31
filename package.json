@@ -1,0 +1,56 @@
+{
+	"name": "gulp-ts",
+	"version": "1.0.0",
+	"description": "",
+	"main": "gulpfile.js",
+	"scripts": {
+		"dev": "gulp",
+		"build": "gulp deploy"
+	},
+	"keywords": [],
+	"author": "Oleg Luppov lupperpuper@gmail.com",
+	"license": "ISC",
+	"devDependencies": {
+		"@babel/core": "^7.21.8",
+		"@babel/preset-env": "^7.22.5",
+		"@rollup/plugin-replace": "^5.0.5",
+		"@typescript-eslint/eslint-plugin": "^6.7.3",
+		"@typescript-eslint/parser": "^6.7.3",
+		"browser-sync": "^2.29.3",
+		"del": "^6.0.0",
+		"eslint": "^8.50.0",
+		"gulp": "^4.0.2",
+		"gulp-autoprefixer": "^8.0.0",
+		"gulp-better-rollup": "^4.0.1",
+		"gulp-clean-css": "^4.3.0",
+		"gulp-concat": "^2.6.1",
+		"gulp-cssimport": "^7.0.0",
+		"gulp-file-include": "^2.3.0",
+		"gulp-group-css-media-queries": "^1.2.2",
+		"gulp-htmlmin": "^5.0.1",
+		"gulp-inline-source": "^4.0.0",
+		"gulp-replace": "^1.1.4",
+		"gulp-sass": "^5.1.0",
+		"gulp-uglify": "^3.0.2",
+		"prettier": "3.0.3",
+		"resize-observer-polyfill": "^1.5.1",
+		"rollup": "^1.32.1",
+		"rollup-plugin-babel": "^4.4.0",
+		"rollup-plugin-commonjs": "^10.1.0",
+		"rollup-plugin-node-resolve": "^5.2.0",
+		"rollup-plugin-typescript": "^1.0.1",
+		"sass": "^1.63.5"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://gitint.elewise.com/elma365/hard-code/frontend-gulp-template.git"
+	},
+	"dependencies": {
+		"@types/react": "^18.2.42",
+		"@types/react-dom": "^18.2.17",
+		"classnames": "^2.3.2",
+		"moment": "^2.30.1",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0"
+	}
+}

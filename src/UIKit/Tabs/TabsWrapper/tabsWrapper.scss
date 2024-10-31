@@ -1,0 +1,26 @@
+.tabs-wrapper {
+	display: flex;
+	flex-direction: column;
+
+	&__actions {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		height: 100%;
+	}
+
+	&__header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		border-bottom: 2px solid var(--medpult-bg-color);
+		height: 55px;
+		align-items: center;
+		padding: 0 18px;
+	}
+
+	&__selector {
+		display: flex;
+		flex-direction: row;
+	}
+}

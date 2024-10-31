@@ -1,0 +1,41 @@
+.button {
+	--button-color: #21a038;
+
+	text-align: center;
+	align-items: center;
+	border: 2px solid transparent;
+	height: 35px;
+	padding: 0 20px;
+	border-radius: 8px;
+	cursor: pointer;
+	background: var(--button-color);
+	color: #fff;
+
+	font-family: Inter;
+	text-align: center;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: normal;
+	letter-spacing: 0.026px;
+
+	text-transform: uppercase;
+
+	&_outline {
+		border: 2px solid var(--button-color);
+		background: transparent;
+		color: var(--button-color);
+	}
+
+	&:active {
+		opacity: 0.6;
+	}
+
+	&:disabled {
+		border: none;
+		color: white;
+		opacity: 1;
+		cursor: not-allowed !important;
+		background-color: #ebebe4 !important;
+	}
+}

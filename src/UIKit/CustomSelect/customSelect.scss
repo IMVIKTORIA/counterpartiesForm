@@ -1,0 +1,27 @@
+.custom-select {
+	flex: 1;
+	position: relative;
+
+	&__list-wrapper {
+		z-index: 1000;
+		position: absolute;
+		height: fit-content;
+		max-height: 150px;
+		overflow: hidden;
+
+		border-bottom: 2px solid var(--medpult-field-border-color);
+		border-left: 2px solid var(--medpult-field-border-color);
+		border-right: 2px solid var(--medpult-field-border-color);
+
+		border-radius: 0 0 7px 7px;
+		background-color: white;
+		box-shadow: none;
+	}
+
+	&__list {
+		width: 100%;
+		height: fit-content;
+		max-height: inherit;
+		overflow-y: auto;
+	}
+}
