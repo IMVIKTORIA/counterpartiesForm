@@ -157,7 +157,9 @@ function getSelectInsuredLink(): string {
   return "#selectRequestTest";
 }
 
-async function OnInit(): Promise<void> {}
+async function OnInit(): Promise<void> {
+  await randomDelay();
+}
 
 export default {
   getAppeals,
