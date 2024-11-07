@@ -157,6 +157,8 @@ function getSelectInsuredLink(): string {
   return "#selectRequestTest";
 }
 
+async function OnInit(): Promise<void> {}
+
 export default {
   getAppeals,
   getRequestsCount,
@@ -169,4 +171,5 @@ export default {
   getSelectRequestAccessSettings,
   getSelectRequestLink,
   getSelectInsuredLink,
+  OnInit,
 };
