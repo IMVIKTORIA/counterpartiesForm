@@ -8,6 +8,7 @@ import { ObjectItem } from "../../../UIKit/Filters/FiltersTypes";
 import { FetchInputData } from "../../../UIKit/shared/types/types";
 import { SelectRequestFilters } from "../../stores/SelectRequestContext";
 import { SelectRequestData } from "../types";
+import { redirectSPA } from "../utils/utils";
 
 /** Заглушка ожидания ответа сервера */
 function randomDelay() {
@@ -147,6 +148,10 @@ function getSelectRequestAccessSettings(): ISelectTaskAccessSettings {
   };
 }
 
+/** Получить ссылку формы контрагента */
+function getCounterpartytLink(): string {
+  return "#selectСounterpartyTest";
+}
 /** Получить ссылку формы отбора обращений */
 function getSelectRequestLink(): string {
   return "#selectRequestTest";
@@ -161,6 +166,104 @@ async function OnInit(): Promise<void> {
   await randomDelay();
 }
 
+// При переносе удалить
+declare const Context: any;
+/**
+ * Из оригинальных скриптов
+ */
+/** Получение кода страницы Договор */
+function getTreatyPageCode(): string {
+  return Context.data.insurance_treaty_page_code;
+}
+/** Получение кода страницы Рабочий стол */
+function getWortTablePageCode(): string {
+  return Context.data.worktable_page_code;
+}
+/** Получение кода страницы Обращение */
+function getRequestPagePath(): string {
+  return Context.data.request_page_path;
+}
+/** Получение кода страницы Контрагента */
+function getContractorPageCode(): string {
+  return Context.data.contractor_page_path;
+}
+/**
+ * Установить застрахованного в фильтр (Из оригинальных скриптов)
+ */
+/** Данные поля формы */
+interface IInputData {
+  /** Строковое значение */
+  value: string;
+  /** Дополнительные данные */
+  data?: any;
+}
+/** Значение поля ввода типа Категория */
+class InputDataCategory implements IInputData {
+  value: string;
+  data: {
+    code: string;
+  };
+
+  constructor(value?: string, code?: string) {
+    this.value = value ?? "";
+    this.data = { code: code ?? "" };
+  }
+}
+/** Получение контагента по id */
+async function getContractorById(id: string): Promise<InputDataCategory> {
+  const contractor = await Context.fields.contractors.app
+    .search()
+    .where((f) => f.__id.eq(id))
+    .first();
+  return new InputDataCategory(contractor?.data.__name, contractor?.data.__id);
+}
+
+/** Установить страхователя в договор */
+async function setContractInsurer(contractorId: string) {
+  const treatyDraftKey = "medpult-treaty-draft";
+  const draftData = localStorage.getItem(treatyDraftKey);
+
+  if (draftData) {
+    const data = JSON.parse(draftData);
+    data.values.policyHolder = await getContractorById(contractorId);
+
+    localStorage.setItem(treatyDraftKey, JSON.stringify(data));
+  }
+}
+/** Установить ЛПУ договора */
+async function setContractLPU(contractorId: string) {
+  const treatyDraftKey = "medpult-treaty-draft";
+  const draftData = localStorage.getItem(treatyDraftKey);
+
+  if (draftData) {
+    const data = JSON.parse(draftData);
+    data.values.lpu = await getContractorById(contractorId);
+
+    localStorage.setItem(treatyDraftKey, JSON.stringify(data));
+  }
+}
+/** Установить Ответственное лицо в строку */
+async function setContractResponsible(
+  contractorId: string,
+  index: string | null
+) {
+  const treatyDraftKey = "medpult-treaty-draft";
+  const draftData = localStorage.getItem(treatyDraftKey);
+
+  if (draftData) {
+    const data = JSON.parse(draftData);
+    if (index !== null) {
+      data.values.sides[Number(index)].actualData.contractor =
+        await getContractorById(contractorId);
+    }
+
+    localStorage.setItem(treatyDraftKey, JSON.stringify(data));
+  }
+}
+
+//Добавить номер телефона к контрагенту
+const addContractorPhone = async (contractorId: string, phone: any) => {};
+
 export default {
   getAppeals,
   getRequestsCount,
@@ -174,4 +277,15 @@ export default {
   getSelectRequestLink,
   getSelectInsuredLink,
   OnInit,
+  getContractorById,
+
+  getCounterpartytLink,
+  getTreatyPageCode,
+  getWortTablePageCode,
+  getRequestPagePath,
+  getContractorPageCode,
+  setContractInsurer,
+  setContractLPU,
+  setContractResponsible,
+  addContractorPhone,
 };

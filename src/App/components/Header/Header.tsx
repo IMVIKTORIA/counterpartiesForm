@@ -2,6 +2,8 @@ import React, { PropsWithChildren, useState } from "react";
 import icons from "../../shared/icons";
 import FilterButton from "../../../UIKit/Filters/FilterButton/FilterButton";
 import { selectRequestContext } from "../../stores/SelectRequestContext";
+import Button from "../../../UIKit/Button/Button";
+import Scripts from "../../shared/utils/clientScripts";
 
 interface HeaderProps {
   /** Заголовок */
@@ -59,6 +61,10 @@ function Header({
     () => setIsShowIndicator(checkHasActiveFilters()),
     [data]
   );
+  const handleCreateCounterparty = () => {
+    const link = Scripts.getCounterpartytLink();
+    window.location.href = link;
+  };
 
   return (
     <div className="header">
@@ -76,6 +82,10 @@ function Header({
         Отобрано: <span>{elementsCount}</span>
       </div>
       <div className="header__buttons">{children}</div>
+      <Button
+        title={"создать контрагента"}
+        clickHandler={handleCreateCounterparty}
+      />
     </div>
   );
 }

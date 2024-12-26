@@ -10,7 +10,8 @@ import {
   selectRequestContext,
 } from "../../stores/SelectRequestContext";
 import { SelectRequestData } from "../../shared/types";
-import utils from "../../shared/utils/utils";
+import utils, { redirectSPA } from "../../shared/utils/utils";
+import { localStorageDraftKey } from "../../shared/utils/constants";
 
 interface SelectRequestListProps {
   /** Ширина списка */
@@ -31,6 +32,21 @@ export default function SelectRequestList({ width }: SelectRequestListProps) {
   const onClickTaskNumber = async (props: ItemData) => {
     const taskId = props.info;
     if (!taskId) return;
+
+    // Запись текущего url в localStorage
+    window.localStorage.setItem(
+      "medpultPathBefore",
+      window.location.pathname + window.location.search
+    );
+    localStorage.setItem("taskId", taskId);
+
+    localStorage.setItem(localStorageDraftKey, JSON.stringify(data));
+    // Переход
+    const link = Scripts.getContractorPageCode();
+    redirectSPA(link);
+  };
+
+  /**
     // Установка обращения
     const requestId = await Scripts.getRequestIdByTaskId(taskId);
     utils.setRequest(requestId);
@@ -39,8 +55,7 @@ export default function SelectRequestList({ width }: SelectRequestListProps) {
 
     // Переход
     const link = await Scripts.getRequestLink();
-    utils.redirectSPA(link);
-  };
+    utils.redirectSPA(link);*/
 
   /** Обработчик нажатия на номер обращения */
   const onClickRequest = async (props: ItemData) => {
@@ -64,6 +79,11 @@ export default function SelectRequestList({ width }: SelectRequestListProps) {
   /** Доступ к поиску */
   const searchAccess =
     Scripts.getSelectRequestAccessSettings().searchButton == 2;
+
+  /** Присвоить выбранные элементы */
+  const setSelectedItems = (ids: string[]) => {
+    setValue("selectedItemsIds", ids);
+  };
 
   /** Колонки списка */
   const columns = [
@@ -122,6 +142,7 @@ export default function SelectRequestList({ width }: SelectRequestListProps) {
         getDataHandler={Scripts.getAppeals}
         height="70vh"
         listWidth={width}
+        setSelectedItems={setSelectedItems}
       />
     </div>
   );

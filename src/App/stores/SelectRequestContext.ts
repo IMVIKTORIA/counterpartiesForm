@@ -18,6 +18,8 @@ export class SelectRequestData {
   onClickSearch: () => Promise<void>;
   /** Количество отобранных элементов */
   elementsCount: number;
+  /** Идентификаторы выбранных элементов */
+  selectedItemsIds: string[];
 
   constructor() {
     this.filters = new SelectRequestFilters();
@@ -26,6 +28,7 @@ export class SelectRequestData {
       alert("test");
     };
     this.elementsCount = 0;
+    this.selectedItemsIds = [];
   }
 }
 

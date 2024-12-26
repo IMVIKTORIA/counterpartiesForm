@@ -6,9 +6,11 @@ import {
 import Header from "../Header/Header";
 import SelectRequestFiltersForm from "../SelectRequestFiltersForm/SelectRequestFiltersForm";
 import SelectRequestList from "../SelectRequestList/SelectRequestList";
+import SelectButton from "./SelectButton/SelectButton";
 import { getDataFromDraft } from "../../shared/utils/utils";
 import Scripts from "../../shared/utils/clientScripts";
 import Loader from "../../../UIKit/Loader/Loader";
+import { localStorageDraftKey } from "../../shared/utils/constants";
 
 /** Форма отбора обращений */
 export default function SelectRequestForm() {
@@ -22,6 +24,7 @@ export default function SelectRequestForm() {
       if (draftData) {
         filtersData.filters = draftData.filters;
         filtersData.filterStates = draftData.filterStates;
+        //localStorage.setItem(localStorageDraftKey, JSON.stringify(filtersData));
       }
     } catch (e) {
       throw new Error("Ошибка получения данных из черновика: " + e);
@@ -115,7 +118,9 @@ export default function SelectRequestForm() {
                 clickFilterHandler={toggleShowFilters}
                 elementsCount={data.elementsCount}
                 title="Форма отбора контрагентов"
-              />
+              >
+                <SelectButton />
+              </Header>
             </div>
             <div
               className="select-request-form__content"
