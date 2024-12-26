@@ -1,42 +1,44 @@
 .custom-list-header-column {
-	user-select: none;
-	display: flex;
-	flex-direction: row;
-	gap: 8px;
-	align-items: center;
+  user-select: none;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
 
-	&__name {
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		overflow: hidden;
+  &__name {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 
-		font-family: 'Inter';
-		font-style: normal;
-		font-weight: 500;
-		font-size: 12px;
-		line-height: 130%;
-		letter-spacing: 0.0025em;
-		text-transform: uppercase;
-		color: #959599;
-	}
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 130%;
+    letter-spacing: 0.0025em;
+    text-transform: uppercase;
+    color: #959599;
+    width: 10px;
+    flex: 1;
+  }
 
-	&__button {
-		width: 16px;
-		height: 16px;
-		display: flex;
-		flex-direction: column;
-		cursor: pointer;
+  &__button {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
 
-		&_up {
-			display: flex;
-			width: 16px;
-			height: 8px;
-		}
-		&_down {
-			display: flex;
-			transform: rotate(180deg);
-			width: 16px;
-			height: 8px;
-		}
-	}
+    &_up {
+      display: flex;
+      width: 16px;
+      height: 8px;
+    }
+    &_down {
+      display: flex;
+      transform: rotate(180deg);
+      width: 16px;
+      height: 8px;
+    }
+  }
 }

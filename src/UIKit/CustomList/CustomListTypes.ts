@@ -35,6 +35,8 @@ export class ListColumnData {
   code: string;
   /** Обработчик нажатия */
   onClick?: (props: ItemData) => any;
+  /** Разворачиваемый ли столбец */
+  isRollable: boolean;
 
   constructor({
     name,
@@ -43,6 +45,7 @@ export class ListColumnData {
     isSortable,
     isLink,
     onClick,
+    isRollable,
   }: {
     name: string;
     code: string;
@@ -50,6 +53,7 @@ export class ListColumnData {
     isSortable?: boolean;
     isLink?: boolean;
     onClick?: (props: any) => any;
+    isRollable?: boolean;
   }) {
     this.fr = fr ?? 1;
     this.isSortable = isSortable ?? false;
@@ -59,6 +63,7 @@ export class ListColumnData {
 
     this.name = name;
     this.code = code;
+    this.isRollable = isRollable ?? false;
   }
 }
 
@@ -76,7 +81,9 @@ export class ItemData<InfoType = string> {
 }
 
 /** Строковое значение колонки */
-export class ItemDataString extends ItemData<string> {
+export class ItemDataString extends ItemData<undefined> {
+  value: string;
+
   constructor(value: string) {
     super({ value: value });
   }

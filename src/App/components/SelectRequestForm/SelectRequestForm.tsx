@@ -11,6 +11,11 @@ import { getDataFromDraft } from "../../shared/utils/utils";
 import Scripts from "../../shared/utils/clientScripts";
 import Loader from "../../../UIKit/Loader/Loader";
 import { localStorageDraftKey } from "../../shared/utils/constants";
+import {
+  DateFilter,
+  StringFilter,
+  ListFilter,
+} from "../../../UIKit/Filters/FiltersTypes";
 
 /** Форма отбора обращений */
 export default function SelectRequestForm() {
@@ -22,9 +27,64 @@ export default function SelectRequestForm() {
     try {
       const draftData: SelectRequestData | undefined = getDataFromDraft();
       if (draftData) {
-        filtersData.filters = draftData.filters;
+        filtersData.filters.number = new StringFilter(
+          "number",
+          "Полное наименование",
+          draftData.filters.number?.value
+        );
+
+        filtersData.filters.type = new ListFilter(
+          "type",
+          "Тип",
+          draftData.filters.type?.values
+        );
+
+        filtersData.filters.sort = new ListFilter(
+          "sort",
+          "Вид",
+          draftData.filters.sort?.values
+        );
+
+        filtersData.filters.signImportance = new ListFilter(
+          "signImportance",
+          "Признак важности",
+          draftData.filters.signImportance?.values
+        );
+
+        filtersData.filters.birthDate = new DateFilter(
+          "birthDate",
+          "Дата рождения",
+          {
+            valueFrom: draftData.filters.birthDate?.valueFrom,
+            valueTo: draftData.filters.birthDate?.valueTo,
+          }
+        );
+
+        filtersData.filters.gender = new ListFilter(
+          "gender",
+          "Пол",
+          draftData.filters.gender?.values
+        );
+
+        filtersData.filters.telephone = new StringFilter(
+          "telephone",
+          "Телефон",
+          draftData.filters.telephone?.value
+        );
+
+        filtersData.filters.email = new StringFilter(
+          "email",
+          "Email",
+          draftData.filters.email?.value
+        );
+
+        filtersData.filters.inn = new StringFilter(
+          "inn",
+          "ИНН",
+          draftData.filters.inn?.value
+        );
+
         filtersData.filterStates = draftData.filterStates;
-        //localStorage.setItem(localStorageDraftKey, JSON.stringify(filtersData));
       }
     } catch (e) {
       throw new Error("Ошибка получения данных из черновика: " + e);

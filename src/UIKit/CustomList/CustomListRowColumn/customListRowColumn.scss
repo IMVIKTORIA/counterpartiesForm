@@ -2,21 +2,33 @@
 	display: flex;
 	gap: 8px;
 	align-items: center;
-
 	height: 100%;
 	overflow: hidden;
 
 	& > span {
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		overflow: hidden;
-
 		font-family: 'Inter';
 		font-style: normal;
 		font-weight: 400;
 		font-size: 14px;
 		line-height: 130%;
 		letter-spacing: 0.0025em;
+	}
+
+	&__more {
+		align-self: self-start;
+		word-break: break-all;
+		margin-top: 16px;
+		position: absolute;
+		background-color: var(--medpult-bg-color);
+		overflow-y: auto;
+		height: fit-content;
+		max-height: 160px;
+	}
+
+	&__less {
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
 	}
 
 	&__link {
@@ -33,7 +45,8 @@
 
 		& > span:hover {
 			border-bottom: 2px solid #4588e5;
-			margin-top: 2px;
+			// margin-top: 2px;
+			transform: translateY(1px);
 		}
 
 		& > span:active {

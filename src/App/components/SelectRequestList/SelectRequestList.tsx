@@ -29,18 +29,18 @@ export default function SelectRequestList({ width }: SelectRequestListProps) {
   };
 
   /** Обработчик нажатия на номер задачи */
-  const onClickTaskNumber = async (props: ItemData) => {
-    const taskId = props.info;
-    if (!taskId) return;
+  const onClickContractor = async (props: ItemData) => {
+    const contractorId = props.info;
+    if (!contractorId) return;
 
     // Запись текущего url в localStorage
     window.localStorage.setItem(
       "medpultPathBefore",
       window.location.pathname + window.location.search
     );
-    localStorage.setItem("taskId", taskId);
-
+    localStorage.setItem("medpultContractorId", contractorId);
     localStorage.setItem(localStorageDraftKey, JSON.stringify(data));
+
     // Переход
     const link = Scripts.getContractorPageCode();
     redirectSPA(link);
@@ -93,7 +93,7 @@ export default function SelectRequestList({ width }: SelectRequestListProps) {
       fr: 1,
       isSortable: searchAccess,
       isLink: true,
-      onClick: onClickTaskNumber,
+      onClick: onClickContractor,
     }),
     new ListColumnData({
       name: data.filters.type.fieldName,
