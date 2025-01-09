@@ -16,10 +16,15 @@ import { localStorageDraftKey } from "../../shared/utils/constants";
 interface SelectRequestListProps {
   /** Ширина списка */
   width: number;
+
+  /** Возможность выбора строки */
+  isSelectable: boolean
+  /** Множественный выбор */
+  isMultipleSelect: boolean
 }
 
 /** Фильтры формы отбра задач */
-export default function SelectRequestList({ width }: SelectRequestListProps) {
+export default function SelectRequestList({ width, isMultipleSelect, isSelectable }: SelectRequestListProps) {
   const { data, setValue } = selectRequestContext.useContext();
 
   /** Установка обработчика нажатия на поиск */
@@ -142,6 +147,8 @@ export default function SelectRequestList({ width }: SelectRequestListProps) {
         getDataHandler={Scripts.getAppeals}
         height="70vh"
         listWidth={width}
+        isSelectable={isSelectable}
+        isMultipleSelect={isMultipleSelect}
         setSelectedItems={setSelectedItems}
       />
     </div>

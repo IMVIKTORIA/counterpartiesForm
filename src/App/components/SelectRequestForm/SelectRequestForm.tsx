@@ -106,6 +106,7 @@ export default function SelectRequestForm() {
     const selectMultiple = new URLSearchParams(window.location.search).get(
       "select_multiple"
     );
+
     if (selectMultiple != undefined) {
       setIsMultipleSelect(true);
     }
@@ -195,7 +196,7 @@ export default function SelectRequestForm() {
               </div>
               <div className="select-request-form__list">
                 <div>
-                  <SelectRequestList width={listWidth} />
+                  <SelectRequestList isMultipleSelect={isMultipleSelect} isSelectable={isSelectable}  width={listWidth} />
                 </div>
               </div>
             </div>
