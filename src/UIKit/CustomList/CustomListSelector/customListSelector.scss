@@ -1,0 +1,11 @@
+.custom-list-selector {
+	background-color: white;
+	position: sticky;
+	left: 0px;
+
+	padding: 0 12px;
+
+	& > * {
+		cursor: pointer;
+	}
+}

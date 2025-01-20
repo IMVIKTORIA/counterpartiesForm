@@ -195,6 +195,22 @@ const Checked = (
 	</svg>
 )
 
+const CheckedRadio = (
+	<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<circle cx="10" cy="10" r="9.375" fill="white" stroke="#BFBFC2" stroke-width="1.25" />
+		<circle cx="10" cy="10" r="6.875" fill="#2F91E3" />
+	</svg>
+
+)
+
+const UncheckedRadio = (
+	<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<circle cx="10" cy="10" r="9.375" fill="white" stroke="#BFBFC2" stroke-width="1.25">
+		</circle>
+	</svg>
+)
+
+
 const DeleteSearchItem = (
 	<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 		<path d="M16.2426 7.75827L7.75736 16.2435M16.2426 16.2435L7.75736 7.75827" stroke="#AAAAAD" stroke-width="2" stroke-linecap="round" />
@@ -256,6 +272,10 @@ export default {
 	Checked,
 	/** Чекбокс не отмечено */
 	Unchecked,
+	/** Переключатель отмечено */
+	CheckedRadio,
+	/** Переключатель не отмечено */
+	UncheckedRadio,
 	/** Иконка удаления элемента фильтра с поиском */
 	DeleteSearchItem,
 	/** Иконка фильтра */

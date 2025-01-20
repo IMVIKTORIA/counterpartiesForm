@@ -14,9 +14,8 @@ export default function FilterItemApp(props: FilterItemAppProps) {
 
     /** Удалить значение */
     const removeValue = () => {
-        const currentValue: AppFilter = filterValue;
-        currentValue.reset()
-        setFilterValue(currentValue);
+        filterValue.reset();
+        setFilterValue(filterValue);
     }
 
     return (

@@ -79,10 +79,12 @@ export class ListFilter implements IFilter {
 	fieldCode: string
 	fieldName: string
 
-	constructor(code: string, name: string) {
+	constructor(code: string, name: string, values?: ObjectItem[]) {
 		this.reset()
 		this.fieldCode = code
 		this.fieldName = name
+
+		if (values?.length) this.values = values
 	}
 
 	reset(): void {
@@ -99,10 +101,14 @@ export class DateFilter implements IFilter {
 	fieldCode: string
 	fieldName: string
 
-	constructor(code: string, name: string) {
+	constructor(code: string, name: string, dateValues?: { valueFrom?: string; valueTo?: string }) {
 		this.reset()
 		this.fieldCode = code
 		this.fieldName = name
+		if (dateValues) {
+			if (dateValues.valueFrom) this.valueFrom = dateValues.valueFrom
+			if (dateValues.valueTo) this.valueTo = dateValues.valueTo
+		}
 	}
 
 	reset(): void {

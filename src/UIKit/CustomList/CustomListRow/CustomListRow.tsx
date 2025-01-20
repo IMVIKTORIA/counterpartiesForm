@@ -1,6 +1,7 @@
 import React from 'react'
 import CustomListRowColumn from '../CustomListRowColumn/CustomListRowColumn'
 import { ItemData, ListColumnData, getDetailsLayoutAttributes } from '../CustomListTypes'
+import CustomListSelector from '../CustomListSelector/CustomListSelector'
 
 interface ListRowProps<ItemType = any> {
 	/** Настройки строки (обязательно) */
@@ -24,11 +25,23 @@ interface ListRowProps<ItemType = any> {
 	isClickable?: boolean
 
 	reloadData: () => void
+
+	listRef?: React.RefObject<HTMLDivElement>
+
+	/** Возможность выбора строки */
+	isSelectable?: boolean
+	/** Множественный выбор строк */
+	isMultipleSelect?: boolean
+
+	/** Изменить выбор строки */
+	toggleChecked: () => void;
+	/** Селектор активен */
+	isChecked: boolean;
 }
 
 /** Строка таблицы */
 function CustomListRow<ItemType = any>(props: ListRowProps<ItemType>) {
-	const { isShowDetails, columnsSettings, data, getDetailsLayout, setOpenRowIndex, isOpen, isClickable, reloadData } = props;
+	const { isShowDetails, columnsSettings, data, getDetailsLayout, setOpenRowIndex, isOpen, isClickable, reloadData, listRef, isSelectable, isMultipleSelect, toggleChecked, isChecked } = props;
 
 	/** Получение значения класса строки */
 	const getRowClassname = (): string => {
@@ -40,10 +53,16 @@ function CustomListRow<ItemType = any>(props: ListRowProps<ItemType>) {
 		return "custom-list-row"
 	}
 
+	const rowStyles: React.CSSProperties = {};
+	if (!isSelectable) rowStyles.paddingLeft = `20px`;
+
 	return (
 		<>
 			{!isShowDetails &&
-				<div className={getRowClassname()} onClick={setOpenRowIndex}>
+				<div className={getRowClassname()} onClick={setOpenRowIndex} style={rowStyles}>
+					{/* Селектор */}
+					{isSelectable && <CustomListSelector onClickSelector={toggleChecked} isMultiple={isMultipleSelect} isChecked={isChecked} />}
+					{/* Колонки с данными */}
 					{columnsSettings.map(settings => {
 						if (data == undefined) {
 							return;
@@ -51,7 +70,7 @@ function CustomListRow<ItemType = any>(props: ListRowProps<ItemType>) {
 						const columnData: ItemData<any> = data[settings.code];
 
 						return (
-							<CustomListRowColumn data={columnData} {...settings} />
+							<CustomListRowColumn listRef={listRef} data={columnData} {...settings} />
 						)
 					})}
 				</div>

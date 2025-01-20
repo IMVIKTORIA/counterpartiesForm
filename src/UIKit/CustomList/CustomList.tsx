@@ -3,6 +3,7 @@ import CustomListColumn from './CustomListHeaderColumn/CustomListHeaderColumn'
 import Loader from '../Loader/Loader'
 import CustomListRow from './CustomListRow/CustomListRow'
 import { FetchData, FetchItem, ListColumnData, SortData, getDetailsLayoutAttributes } from './CustomListTypes'
+import CustomListSelector from './CustomListSelector/CustomListSelector'
 
 type ListProps<SearchDataType = any, ItemType = any> = {
 	/** Основные настройки */
@@ -25,12 +26,19 @@ type ListProps<SearchDataType = any, ItemType = any> = {
 
 	/** Получение формы детальной информации по вкладке */
 	getDetailsLayout?: ({ rowData, onClickRowHandler }: getDetailsLayoutAttributes) => any
+
+	/** Возможность выбора строки */
+	isSelectable?: boolean
+	/** Множественный выбор строк */
+	isMultipleSelect?: boolean
+	/** Присвоить выбранные строки */
+	setSelectedItems?: (ids: string[]) => void
 }
 
 /** Список данных в виде таблицы */
 function CustomList<SearchDataType = any, ItemType = any>(props: ListProps<SearchDataType, ItemType>) {
-	const { height = "100%", listWidth, columnsSettings, getDataHandler, searchData, setSearchHandler, isScrollable = true, getDetailsLayout } = props;
-
+	const { height = "100%", listWidth, columnsSettings, getDataHandler, searchData, setSearchHandler, isScrollable = true, getDetailsLayout, isMultipleSelect, isSelectable, setSelectedItems } = props;
+	useEffect(() => { console.log(listWidth) }, [listWidth])
 	// Страница
 	const [page, setPage] = useState<number>(0);
 	// Показать лоадер
@@ -98,11 +106,15 @@ function CustomList<SearchDataType = any, ItemType = any>(props: ListProps<Searc
 		}
 	}
 
+	const [isSearchPerformed, setIsSearchPerformed] = useState<boolean>(true);
 	/** Установить обработчик нажатия на кнопку поиск */
 	useEffect(() => {
 		if (!setSearchHandler) return;
 
-		setSearchHandler(() => { reloadData() });
+		setSearchHandler(() => {
+			setIsSearchPerformed(true);
+			reloadData()
+		});
 	}, [searchData, sortData])
 
 	/** Обновление оглавления при изменении сортировки */
@@ -123,6 +135,51 @@ function CustomList<SearchDataType = any, ItemType = any>(props: ListProps<Searc
 		return element.offsetWidth - element.clientWidth;
 	}
 
+	/** Идентификаторы выбранных строк */
+	const [checkedRowsIds, setCheckedRowsIds] = useState<string[]>([]);
+	/** Передача выбранных элементов наружу */
+	useEffect(() => {
+		if (setSelectedItems) setSelectedItems(checkedRowsIds);
+	}, [checkedRowsIds])
+
+	/** Добавление/удаление выбранной строки */
+	const toggleCheckedRow = (id: string) => {
+		const findId = checkedRowsIds.find(checkedId => checkedId === id);
+
+		// Удаление
+		if (findId) {
+			setCheckedRowsIds(checkedRowsIds.filter(checkedId => checkedId != id));
+			return
+		}
+
+		// Добавление
+		if (isMultipleSelect) {
+			setCheckedRowsIds([...checkedRowsIds, id]);
+		} else {
+			setCheckedRowsIds([id]);
+		}
+	}
+
+	/** Стили шапки */
+	const headerStyles: React.CSSProperties = {};
+	if (listWidth) headerStyles.width = `${listWidth - getScrollbarWidth(headerRef)}px`;
+	if (!isSelectable) headerStyles.paddingLeft = `20px`;
+
+	const [isAllSelected, setIsAllSelected] = useState<boolean>(false);
+
+	const toggleAllRows = () => {
+		if (!setSelectedItems) return;
+		if (isAllSelected) {
+			setCheckedRowsIds([]);
+			setSelectedItems([]);
+		} else {
+			const allIds = items.map((item) => item.id);
+			setCheckedRowsIds(allIds);
+			setSelectedItems(allIds);
+		}
+		setIsAllSelected(!isAllSelected);
+	};
+
 	return (
 		<div className='custom-list'>
 			<div
@@ -133,7 +190,25 @@ function CustomList<SearchDataType = any, ItemType = any>(props: ListProps<Searc
 				}
 				ref={headerRef}
 			>
-				<div style={listWidth ? { width: `${listWidth - getScrollbarWidth(headerRef)}px` } : {}}>
+				<div style={headerStyles}>
+					{/* TODO: Выбор всех */}
+					{isSelectable && (
+						<div
+							style={{
+								position: "sticky",
+								left: "0",
+								visibility: (isMultipleSelect && isSearchPerformed) ? "visible" : "hidden",
+								zIndex: "1000",
+							}}
+						>
+							<CustomListSelector
+								onClickSelector={toggleAllRows}
+								isChecked={isAllSelected}
+								isMultiple={true}
+								style={{ background: "#f9f9fa" }}
+							/>
+						</div>
+					)}
 					{columnsSettings.map(columnSettings =>
 						<CustomListColumn
 							sortData={sortData}
@@ -168,13 +243,15 @@ function CustomList<SearchDataType = any, ItemType = any>(props: ListProps<Searc
 						}
 
 						return <CustomListRow<ItemType>
+							{...props}
 							key={item.id}
 							data={item.data}
-							columnsSettings={columnsSettings}
-							getDetailsLayout={getDetailsLayout}
 							isShowDetails={getDetailsLayout && item.id === openRowIndex}
 							setOpenRowIndex={toggleShowDetails}
 							reloadData={reloadData}
+							toggleChecked={() => toggleCheckedRow(item.id)}
+							isChecked={Boolean(checkedRowsIds.find(checkedId => checkedId === item.id))}
+							listRef={bodyRef}
 						/>
 					})}
 					{isLoading && <Loader />}

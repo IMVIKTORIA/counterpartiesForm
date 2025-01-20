@@ -2,6 +2,9 @@ import React, { PropsWithChildren, useState } from "react";
 import icons from "../../shared/icons";
 import FilterButton from "../../../UIKit/Filters/FilterButton/FilterButton";
 import { selectRequestContext } from "../../stores/SelectRequestContext";
+import Button from "../../../UIKit/Button/Button";
+import Scripts from "../../shared/utils/clientScripts";
+import { redirectSPA } from "../../shared/utils/utils";
 
 interface HeaderProps {
   /** Заголовок */
@@ -59,6 +62,18 @@ function Header({
     () => setIsShowIndicator(checkHasActiveFilters()),
     [data]
   );
+  const onClickCreateContractor = () => {
+    // Запись текущего url в localStorage
+    window.localStorage.setItem(
+      "medpultPathBefore",
+      window.location.pathname + window.location.search
+    );
+    // Очистить contractorId в localStorage
+    window.localStorage.removeItem("medpultContractorId");
+
+    const contractor_page_path = Scripts.getContractorPageCode();
+    redirectSPA(contractor_page_path);
+  };
 
   return (
     <div className="header">
@@ -76,6 +91,10 @@ function Header({
         Отобрано: <span>{elementsCount}</span>
       </div>
       <div className="header__buttons">{children}</div>
+      <Button
+        title={"создать контрагента"}
+        clickHandler={onClickCreateContractor}
+      />
     </div>
   );
 }

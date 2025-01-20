@@ -1,37 +1,45 @@
+@import url("CustomListSelector/customListSelector.scss");
+@import url("CustomListHeaderColumn/customListHeaderColumn.scss");
+@import url("CustomListRow/customListRow.scss");
+@import url("CustomListRowColumn/customListRowColumn.scss");
 .custom-list {
-	&__header {
-		background: #f9f9fa;
-		border-bottom: 2px solid var(--medpult-bg-color);
-		height: 52px;
-		align-items: center;
+  &__header {
+    background: #f9f9fa;
+    border-bottom: 2px solid var(--medpult-bg-color);
+    height: 52px;
+    align-items: center;
 
-		& > div {
-			padding: 0px 20px;
-			height: 52px;
-			align-items: center;
-			display: flex;
-			gap: 8px;
-			flex-direction: row;
-		}
+    & > div {
+      // padding: 0px 20px;
+      height: 52px;
+      align-items: center;
+      display: flex;
+      gap: 8px;
+      flex-direction: row;
+    }
 
-		&::-webkit-scrollbar {
-			visibility: hidden;
-		}
+    &::-webkit-scrollbar {
+      visibility: hidden;
+    }
 
-		&_scrollable {
-			overflow-y: scroll;
-			overflow-x: hidden;
-		}
-	}
+    &_scrollable {
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+  }
 
-	&__body {
-		&_scrollable {
-			overflow-x: auto;
-			overflow-y: scroll;
-		}
-	}
+  &__body {
+    &_scrollable {
+      overflow-x: auto;
+      overflow-y: scroll;
+    }
 
-	&__wrapper {
-		overflow-y: hidden;
-	}
+    &-wrapper {
+      position: relative;
+    }
+  }
+
+  &__wrapper {
+    overflow-y: hidden;
+  }
 }

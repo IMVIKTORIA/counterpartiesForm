@@ -10,15 +10,21 @@ import {
   selectRequestContext,
 } from "../../stores/SelectRequestContext";
 import { SelectRequestData } from "../../shared/types";
-import utils from "../../shared/utils/utils";
+import utils, { redirectSPA } from "../../shared/utils/utils";
+import { localStorageDraftKey } from "../../shared/utils/constants";
 
 interface SelectRequestListProps {
   /** Ширина списка */
   width: number;
+
+  /** Возможность выбора строки */
+  isSelectable: boolean
+  /** Множественный выбор */
+  isMultipleSelect: boolean
 }
 
 /** Фильтры формы отбра задач */
-export default function SelectRequestList({ width }: SelectRequestListProps) {
+export default function SelectRequestList({ width, isMultipleSelect, isSelectable }: SelectRequestListProps) {
   const { data, setValue } = selectRequestContext.useContext();
 
   /** Установка обработчика нажатия на поиск */
@@ -28,9 +34,24 @@ export default function SelectRequestList({ width }: SelectRequestListProps) {
   };
 
   /** Обработчик нажатия на номер задачи */
-  const onClickTaskNumber = async (props: ItemData) => {
-    const taskId = props.info;
-    if (!taskId) return;
+  const onClickContractor = async (props: ItemData) => {
+    const contractorId = props.info;
+    if (!contractorId) return;
+
+    // Запись текущего url в localStorage
+    window.localStorage.setItem(
+      "medpultPathBefore",
+      window.location.pathname + window.location.search
+    );
+    localStorage.setItem("medpultContractorId", contractorId);
+    localStorage.setItem(localStorageDraftKey, JSON.stringify(data));
+
+    // Переход
+    const link = Scripts.getContractorPageCode();
+    redirectSPA(link);
+  };
+
+  /**
     // Установка обращения
     const requestId = await Scripts.getRequestIdByTaskId(taskId);
     utils.setRequest(requestId);
@@ -39,8 +60,7 @@ export default function SelectRequestList({ width }: SelectRequestListProps) {
 
     // Переход
     const link = await Scripts.getRequestLink();
-    utils.redirectSPA(link);
-  };
+    utils.redirectSPA(link);*/
 
   /** Обработчик нажатия на номер обращения */
   const onClickRequest = async (props: ItemData) => {
@@ -65,6 +85,11 @@ export default function SelectRequestList({ width }: SelectRequestListProps) {
   const searchAccess =
     Scripts.getSelectRequestAccessSettings().searchButton == 2;
 
+  /** Присвоить выбранные элементы */
+  const setSelectedItems = (ids: string[]) => {
+    setValue("selectedItemsIds", ids);
+  };
+
   /** Колонки списка */
   const columns = [
     new ListColumnData({
@@ -73,7 +98,7 @@ export default function SelectRequestList({ width }: SelectRequestListProps) {
       fr: 1,
       isSortable: searchAccess,
       isLink: true,
-      onClick: onClickTaskNumber,
+      onClick: onClickContractor,
     }),
     new ListColumnData({
       name: data.filters.type.fieldName,
@@ -122,6 +147,9 @@ export default function SelectRequestList({ width }: SelectRequestListProps) {
         getDataHandler={Scripts.getAppeals}
         height="70vh"
         listWidth={width}
+        isSelectable={isSelectable}
+        isMultipleSelect={isMultipleSelect}
+        setSelectedItems={setSelectedItems}
       />
     </div>
   );
