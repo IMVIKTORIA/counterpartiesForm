@@ -97,6 +97,29 @@ export default function SelectButton({}: SelectButtonProps) {
     redirectSPA(request_page_path);
   };
 
+  /** Обработчик события нажатия на кнопку ссылки */
+  async function setRequestContractor(fieldId: string) {
+    // Получение выбранного контрагента из контекста
+    const selectedContractorId = data.selectedItemsIds[0];
+    if (!selectedContractorId) return;
+    
+    // Получение ссылки на страницу обращения
+    const request_page_path = Scripts.getRequestPagePath();
+
+    const fullname = new URLSearchParams(window.location.search).get(
+      "fullname"
+    );
+    const mode = new URLSearchParams(window.location.search).get("mode");
+
+    await Scripts.assignInsured(fieldId, selectedContractorId);
+
+    if (mode) {
+      redirectSPA(request_page_path + "?mode=" + mode);
+    } else {
+      redirectSPA(request_page_path);
+    }
+  }
+
   // Нажатие на кнопку выбрать
   const handleSelectClick = async () => {
     const fieldId = new URLSearchParams(window.location.search).get("field_id");
@@ -117,6 +140,9 @@ export default function SelectButton({}: SelectButtonProps) {
         break;
       case "medpult-worktable-call":
         await assignPhone();
+        break;
+      default:
+        setRequestContractor(fieldId);
         break;
     }
   };
