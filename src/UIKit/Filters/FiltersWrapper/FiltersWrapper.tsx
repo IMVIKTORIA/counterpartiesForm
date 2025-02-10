@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect } from 'react'
+import React, { PropsWithChildren, useEffect, useRef } from 'react'
 import Button from '../../Button/Button'
 import { ButtonType } from '../../Button/ButtonTypes'
 
@@ -14,12 +14,18 @@ export default function FiltersWrapper({ searchHandler, resetHandler, children, 
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (event.key === "Enter" && searchHandler) searchHandler()
+			removeListener()
 		};
+		
+		const removeListener = () => {
+			document.removeEventListener("keydown", handleKeyDown)
+		}
 
 		document.addEventListener("keydown", handleKeyDown);
-
-		return () => document.removeEventListener("keydown", handleKeyDown);
+		
+		return () => removeListener()
 	}, [searchHandler]);
+	
 
 	return (
 		<div className="filters-wrapper">
