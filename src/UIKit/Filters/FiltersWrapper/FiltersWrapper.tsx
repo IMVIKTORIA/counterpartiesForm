@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useRef } from 'react'
+import React, { PropsWithChildren, useEffect } from 'react'
 import Button from '../../Button/Button'
 import { ButtonType } from '../../Button/ButtonTypes'
 
