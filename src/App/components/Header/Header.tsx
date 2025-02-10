@@ -77,7 +77,7 @@ function Header({
 
   return (
     <div className="header">
-      <div className="header__returnButton" onClick={onClickReturn}>
+      <div className="header__returnButton" onClick={onClickReturn} >
         {icons.ReturnButton}
       </div>
       <div className="header__filterButton">
