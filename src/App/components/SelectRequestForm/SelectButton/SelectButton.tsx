@@ -98,7 +98,7 @@ export default function SelectButton({}: SelectButtonProps) {
   };
 
   /** Обработчик события нажатия на кнопку ссылки */
-  async function setRequestContractor(fieldId: string) {
+  async function setRequestContractor(fieldId?: string) {
     // Получение выбранного контрагента из контекста
     const selectedContractorId = data.selectedItemsIds[0];
     if (!selectedContractorId) return;
@@ -111,7 +111,7 @@ export default function SelectButton({}: SelectButtonProps) {
     );
     const mode = new URLSearchParams(window.location.search).get("mode");
 
-    await Scripts.assignInsured(fieldId, selectedContractorId);
+    if(fieldId) await Scripts.assignInsured(fieldId, selectedContractorId);
 
     if (mode) {
       redirectSPA(request_page_path + "?mode=" + mode);
@@ -122,7 +122,7 @@ export default function SelectButton({}: SelectButtonProps) {
 
   // Нажатие на кнопку выбрать
   const handleSelectClick = async () => {
-    const fieldId = new URLSearchParams(window.location.search).get("field_id");
+    const fieldId = new URLSearchParams(window.location.search).get("field_id") ?? "";
 
     switch (fieldId) {
       case "medpult-task-lpu-medical":
