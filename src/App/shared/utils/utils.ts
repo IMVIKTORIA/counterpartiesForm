@@ -3,6 +3,7 @@ import { localStorageDraftKey } from "./constants";
 
 /** Маршрутизация по SPA */
 export const redirectSPA = (href: string) => {
+  console.log("redirectSPA", href)
   let element = document.createElement("a");
   element.href = href;
   element.style.display = "none";

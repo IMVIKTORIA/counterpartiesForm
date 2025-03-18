@@ -1,5 +1,5 @@
 import React from "react";
-//////import Scripts from "../../../shared/utils/clientScripts";
+import Scripts from "../../../shared/utils/clientScripts";
 import { selectRequestContext } from "../../../stores/SelectRequestContext";
 import Button from "../../../../UIKit/Button/Button";
 import { redirectSPA } from "../../../shared/utils/utils";
@@ -97,6 +97,7 @@ export default function SelectButton({}: SelectButtonProps) {
     redirectSPA(request_page_path);
   };
 
+
   /** Обработчик события нажатия на кнопку ссылки */
   async function setRequestContractor(fieldId?: string) {
     // Получение выбранного контрагента из контекста
@@ -105,19 +106,25 @@ export default function SelectButton({}: SelectButtonProps) {
     
     // Получение ссылки на страницу обращения
     const request_page_path = Scripts.getRequestPagePath();
-
+    
     const fullname = new URLSearchParams(window.location.search).get(
       "fullname"
     );
     const mode = new URLSearchParams(window.location.search).get("mode");
-
+    
     if(fieldId) await Scripts.assignInsured(fieldId, selectedContractorId);
 
+    const url = new URL(window.location.href);
+    const requestId = url.searchParams.get("request_id");
+    
+    const redirectUrl = new URL(window.location.origin + "/" + request_page_path);
     if (mode) {
-      redirectSPA(request_page_path + "?mode=" + mode);
+      redirectUrl.searchParams.set("mode", mode)
     } else {
-      redirectSPA(request_page_path);
+      if(requestId) redirectUrl.searchParams.set("request_id", requestId)
     }
+    
+    redirectSPA(redirectUrl.toString())
   }
 
   // Нажатие на кнопку выбрать
