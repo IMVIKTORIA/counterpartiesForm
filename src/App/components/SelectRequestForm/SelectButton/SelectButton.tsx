@@ -2,7 +2,7 @@ import React from "react";
 import Scripts from "../../../shared/utils/clientScripts";
 import { selectRequestContext } from "../../../stores/SelectRequestContext";
 import Button from "../../../../UIKit/Button/Button";
-import { redirectSPA } from "../../../shared/utils/utils";
+import { getTaskDraft, redirectSPA, setTaskDraft } from "../../../shared/utils/utils";
 
 interface SelectButtonProps {}
 
@@ -54,6 +54,7 @@ export default function SelectButton({}: SelectButtonProps) {
     redirectSPA(worktable_page_code);
   };
 
+
   const setTaskContractor = async (fieldId: string) => {
     // Получение выбранного контрагента из контекста
     const selectedContractorId = data.selectedItemsIds[0];
@@ -72,31 +73,36 @@ export default function SelectButton({}: SelectButtonProps) {
 
     // Получение ссылки на страницу обращения
     const request_page_path = Scripts.getRequestPagePath();
+
     // Ключ ls для черновика задачи
     const taskDraftKey = "medpult-task-draft";
     if (!fieldId) redirectSPA(request_page_path);
 
     // Получение даннык контрагента
     const contractor = await Scripts.getContractorById(selectedContractorId);
-    const tasksDataString = localStorage.getItem(taskDraftKey);
+    const tasksData = getTaskDraft();
 
-    if (!tasksDataString) {
+    if (!tasksData) {
       redirectSPA(request_page_path);
       return;
     }
-
-    const tasksData = JSON.parse(tasksDataString);
 
     tasksData.data[fieldCode] = {
       value: contractor.value,
       code: contractor.data.code,
     };
 
-    localStorage.setItem(taskDraftKey, JSON.stringify(tasksData));
+    setTaskDraft(tasksData);
 
-    redirectSPA(request_page_path);
+    const url = new URL(window.location.href);
+    const requestId = url.searchParams.get("request_id");
+    const taskId = url.searchParams.get("task_id");
+
+    const redirectUrl = new URL(window.location.origin + "/" + request_page_path);
+    if(requestId) redirectUrl.searchParams.set("request_id", requestId);
+    if(taskId) redirectUrl.searchParams.set("task_id", taskId);
+    redirectSPA(redirectUrl.toString());
   };
-
 
   /** Обработчик события нажатия на кнопку ссылки */
   async function setRequestContractor(fieldId?: string) {

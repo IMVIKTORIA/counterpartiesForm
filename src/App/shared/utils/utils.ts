@@ -81,6 +81,69 @@ export function saveState<ValueType>(state: ValueType) {
   localStorage.setItem(localStorageDraftKey, stateStr);
 }
 
+
+
+
+  /** Черновик одной задачи */
+  interface TaskDraftSingle {
+    /** Идентфикатор задачи */
+    id?: string;
+    /** Данные задачи */
+    data: {[key: string]: any}
+  }
+  /** Черновики задач */
+  type TasksDraft = {
+    /** Идентификатор обращения (или "create" для режима создания) */
+    [key: string]: TaskDraftSingle
+  }
+
+  /** Ключ значения черновика задач в ls */
+  const TASKS_DRAFT_KEY = "medpult-tasks-draft"
+
+  /** Получение значения черновика задачи (Одноразово) */
+  export function getTaskDraft() {
+    // Получение черновика {[key: string]: object}
+    const lsItem = localStorage.getItem(TASKS_DRAFT_KEY);
+    const draft: TasksDraft | undefined = lsItem ? JSON.parse(lsItem) : undefined;
+    if(!draft) return;
+
+
+    const url = new URL(window.location.href);
+    const requestId = url.searchParams.get("request_id");
+    const taskId = url.searchParams.get("task_id");
+
+    // id задачи или id обращения
+    const draftCode = taskId ?? requestId ?? "";
+    if(!draft[draftCode]) return;
+    
+    // Копирование данных черновика
+    let taskDraftData: TaskDraftSingle =  JSON.parse(JSON.stringify(draft[draftCode]));
+    // Удаление значения из черновика
+    delete draft[draftCode]
+    // Записать новое значение в черновик всех задач
+    localStorage.setItem(TASKS_DRAFT_KEY, JSON.stringify(draft));
+
+    return taskDraftData;
+  }
+
+  /** Установить значение черновика */
+  export function setTaskDraft(draftData: TaskDraftSingle) {
+      const lsItem = localStorage.getItem(TASKS_DRAFT_KEY);
+      let draft: TasksDraft | undefined = lsItem ? JSON.parse(lsItem) : undefined;
+      if(!draft) draft = {};
+  
+      const url = new URL(window.location.href);
+      const requestId = url.searchParams.get("request_id");
+      
+      // Записать в черновик задачи
+      // id задачи или id обращения
+      const draftCode = draftData.id ?? requestId ?? "";
+      draft[draftCode] = draftData
+  
+      // Записать в черновик всех задач
+      localStorage.setItem(TASKS_DRAFT_KEY, JSON.stringify(draft));
+  }
+
 export default {
   redirectSPA,
   setRequest,
