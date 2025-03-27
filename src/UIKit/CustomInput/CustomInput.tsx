@@ -27,7 +27,6 @@ function CustomInput(props: CustomInputProps) {
 		let value = ev.target.value;
 		// Обработка текста по маске
 		if (maskFunction) value = maskFunction(ev.target.value)
-
 		// Запись значения в состояние
 		setValue(value)
 	}

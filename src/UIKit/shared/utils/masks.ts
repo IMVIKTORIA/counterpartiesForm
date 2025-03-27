@@ -31,6 +31,14 @@ export const applyNumbersMask = (value: string): string => {
 	)
 }
 
+/** Маска телефонов */
+export const applyPhoneMask = (value: string): string => {
+	let valueEdited = value;
+	if(valueEdited[0] == '9') valueEdited = "7" + valueEdited;
+	valueEdited = Array.from(valueEdited.matchAll(/(\+?7|8)\D*(\d{1,3})?\D*(\d{1,3})?\D*(\d{1,2})?\D*(\d{1,2})?/gm))[0]?.slice(1).filter(val => val).join(" ").replace(/^(7|8)/,"+7") ?? ""
+	return valueEdited
+}
+
 export default {
 	applyDateMask,
 	applyNumbersMask,
