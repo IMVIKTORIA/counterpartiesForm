@@ -42,6 +42,7 @@ export default function SelectRequestForm() {
     const fullname = new URLSearchParams(window.location.search).get(
       "fullname"
     );
+    const phone = new URLSearchParams(window.location.search).get("phone");
 
     // Множественный выбор
     const selectMultiple = new URLSearchParams(window.location.search).get(
@@ -58,6 +59,11 @@ export default function SelectRequestForm() {
       if (fullname) {
         filtersData.filters.number.value = fullname;
         filtersData.filterStates.number = true;
+      }
+
+      if (phone) {
+        filtersData.filters.telephone.value = `+${phone.trim()}`;
+        filtersData.filterStates.telephone = true;
       }
     }
   };
