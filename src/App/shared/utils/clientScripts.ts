@@ -136,15 +136,19 @@ enum AccessLevel {
 
 /** Настройки доступа формы отбора задач */
 interface ISelectTaskAccessSettings {
-  searchButton: AccessLevel;
-  appendResponsible: AccessLevel;
+  searchButton: AccessLevel
+  createContractorButton: AccessLevel
+  selectButton: AccessLevel
+  page: AccessLevel
 }
 
 /** Получить настройки доступа формы отбора задач */
 function getSelectRequestAccessSettings(): ISelectTaskAccessSettings {
   return {
     searchButton: 2,
-    appendResponsible: 2,
+    createContractorButton: 2,
+    selectButton: 2,
+    page: 2,
   };
 }
 

@@ -48,6 +48,8 @@ function Header({
     [data]
   );
   const onClickCreateContractor = () => {
+    if(getCreateContractorButtonAccess() < 2) return;
+
     // Запись текущего url в localStorage
     window.localStorage.setItem(
       "medpultPathBefore",
@@ -59,6 +61,11 @@ function Header({
     const contractor_page_path = Scripts.getContractorPageCode();
     redirectSPA(contractor_page_path);
   };
+
+  const getCreateContractorButtonAccess = () => {
+    const accessSettings = Scripts.getSelectRequestAccessSettings()
+    return accessSettings.createContractorButton;
+  }
 
   return (
     <div className="header">
@@ -79,6 +86,7 @@ function Header({
       <Button
         title={"создать контрагента"}
         clickHandler={onClickCreateContractor}
+        disabled={getCreateContractorButtonAccess() < 2}
       />
     </div>
   );
