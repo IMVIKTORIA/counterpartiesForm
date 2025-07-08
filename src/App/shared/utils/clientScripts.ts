@@ -136,10 +136,10 @@ enum AccessLevel {
 
 /** Настройки доступа формы отбора задач */
 interface ISelectTaskAccessSettings {
-  searchButton: AccessLevel
-  createContractorButton: AccessLevel
-  selectButton: AccessLevel
-  page: AccessLevel
+  searchButton: AccessLevel;
+  createContractorButton: AccessLevel;
+  selectButton: AccessLevel;
+  page: AccessLevel;
 }
 
 /** Получить настройки доступа формы отбора задач */
@@ -270,31 +270,35 @@ async function setContractResponsible(
  * @param contractorId Идентификатор контрагента
  */
 async function assignInsured(fieldId: string, contractorId: string) {
-    // const draftObj = JSON.parse(localStorage.getItem("medpult-draft"));
-    // const draftItem = {
-    //     fieldId: fieldId,
-    //     contractorId: contractorId
-    // }
-
-    // if (draftObj == undefined) {
-    //     localStorage.setItem("medpult-draft", JSON.stringify([
-    //         draftItem
-    //     ]));
-    //     return;
-    // }
-
-    // const itemIndex = draftObj.findIndex((d: any) => d.fieldId === fieldId);
-    // if (itemIndex === -1) {
-    //     draftObj.push(draftItem)
-    // } else {
-    //     draftObj[itemIndex] = draftItem;
-    // }
-
-    // localStorage.setItem("medpult-draft", JSON.stringify(draftObj));
+  // const draftObj = JSON.parse(localStorage.getItem("medpult-draft"));
+  // const draftItem = {
+  //     fieldId: fieldId,
+  //     contractorId: contractorId
+  // }
+  // if (draftObj == undefined) {
+  //     localStorage.setItem("medpult-draft", JSON.stringify([
+  //         draftItem
+  //     ]));
+  //     return;
+  // }
+  // const itemIndex = draftObj.findIndex((d: any) => d.fieldId === fieldId);
+  // if (itemIndex === -1) {
+  //     draftObj.push(draftItem)
+  // } else {
+  //     draftObj[itemIndex] = draftItem;
+  // }
+  // localStorage.setItem("medpult-draft", JSON.stringify(draftObj));
 }
 
 //Добавить номер телефона к контрагенту
 const addContractorPhone = async (contractorId: string, phone: any) => {};
+
+async function createRequestForContractor(
+  phone: any,
+  contractorId?: string
+): Promise<string | undefined> {
+  return "0197c997-a1df-71ea-88e2-0c9ec3d1f792";
+}
 
 export default {
   getAppeals,
@@ -321,5 +325,6 @@ export default {
   setContractResponsible,
   addContractorPhone,
 
-  assignInsured
+  assignInsured,
+  createRequestForContractor,
 };

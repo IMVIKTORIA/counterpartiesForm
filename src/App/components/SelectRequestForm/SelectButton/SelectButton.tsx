@@ -2,7 +2,11 @@ import React from "react";
 import Scripts from "../../../shared/utils/clientScripts";
 import { selectRequestContext } from "../../../stores/SelectRequestContext";
 import Button from "../../../../UIKit/Button/Button";
-import { getTaskDraft, redirectSPA, setTaskDraft } from "../../../shared/utils/utils";
+import {
+  getTaskDraft,
+  redirectSPA,
+  setTaskDraft,
+} from "../../../shared/utils/utils";
 
 interface SelectButtonProps {}
 
@@ -51,12 +55,20 @@ export default function SelectButton({}: SelectButtonProps) {
     );
     // Записать контрагента в черновик
     // Перейти на форму создания обращения
+    window.localStorage.removeItem("medpult-draft");
+    const requestId = await Scripts.createRequestForContractor(
+      phone,
+      selectedContractorId
+    );
+    const link = Scripts.getRequestPagePath();
+    const redirectUrl = new URL(window.location.origin + "/" + link);
+    if (requestId) redirectUrl.searchParams.set("request_id", requestId);
+    redirectSPA(redirectUrl.toString());
 
     // Перейти на рабочий стол
-    const worktable_page_code = Scripts.getWortTablePageCode();
-    redirectSPA(worktable_page_code);
+    //const worktable_page_code = Scripts.getWortTablePageCode();
+    //redirectSPA(worktable_page_code);
   };
-
 
   const setTaskContractor = async (fieldId: string) => {
     // Получение выбранного контрагента из контекста
@@ -101,9 +113,11 @@ export default function SelectButton({}: SelectButtonProps) {
     const requestId = url.searchParams.get("request_id");
     const taskId = url.searchParams.get("task_id");
 
-    const redirectUrl = new URL(window.location.origin + "/" + request_page_path);
-    if(requestId) redirectUrl.searchParams.set("request_id", requestId);
-    if(taskId) redirectUrl.searchParams.set("task_id", taskId);
+    const redirectUrl = new URL(
+      window.location.origin + "/" + request_page_path
+    );
+    if (requestId) redirectUrl.searchParams.set("request_id", requestId);
+    if (taskId) redirectUrl.searchParams.set("task_id", taskId);
     redirectSPA(redirectUrl.toString());
   };
 
@@ -112,33 +126,36 @@ export default function SelectButton({}: SelectButtonProps) {
     // Получение выбранного контрагента из контекста
     const selectedContractorId = data.selectedItemsIds[0];
     if (!selectedContractorId) return;
-    
+
     // Получение ссылки на страницу обращения
     const request_page_path = Scripts.getRequestPagePath();
-    
+
     const fullname = new URLSearchParams(window.location.search).get(
       "fullname"
     );
     const mode = new URLSearchParams(window.location.search).get("mode");
-    
-    if(fieldId) await Scripts.assignInsured(fieldId, selectedContractorId);
+
+    if (fieldId) await Scripts.assignInsured(fieldId, selectedContractorId);
 
     const url = new URL(window.location.href);
     const requestId = url.searchParams.get("request_id");
-    
-    const redirectUrl = new URL(window.location.origin + "/" + request_page_path);
+
+    const redirectUrl = new URL(
+      window.location.origin + "/" + request_page_path
+    );
     if (mode) {
-      redirectUrl.searchParams.set("mode", mode)
+      redirectUrl.searchParams.set("mode", mode);
     } else {
-      if(requestId) redirectUrl.searchParams.set("request_id", requestId)
+      if (requestId) redirectUrl.searchParams.set("request_id", requestId);
     }
-    
-    redirectSPA(redirectUrl.toString())
+
+    redirectSPA(redirectUrl.toString());
   }
 
   // Нажатие на кнопку выбрать
   const handleSelectClick = async () => {
-    const fieldId = new URLSearchParams(window.location.search).get("field_id") ?? "";
+    const fieldId =
+      new URLSearchParams(window.location.search).get("field_id") ?? "";
 
     switch (fieldId) {
       case "medpult-task-lpu-medical":
