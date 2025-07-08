@@ -49,6 +49,9 @@ export default function SelectButton({}: SelectButtonProps) {
       selectedContractorId,
       phone
     );
+    // Записать контрагента в черновик
+    // Перейти на форму создания обращения
+
     // Перейти на рабочий стол
     const worktable_page_code = Scripts.getWortTablePageCode();
     redirectSPA(worktable_page_code);
