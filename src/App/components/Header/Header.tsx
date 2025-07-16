@@ -58,8 +58,20 @@ function Header({
     // Очистить contractorId в localStorage
     window.localStorage.removeItem("medpultContractorId");
 
+    const currentUrl = new URL(window.location.href);
+
+    const fieldId = currentUrl.searchParams.get("field_id")
+    const requestId = currentUrl.searchParams.get("request_id")
+    const mode = currentUrl.searchParams.get("mode")
+
     const contractor_page_path = Scripts.getContractorPageCode();
-    redirectSPA(contractor_page_path);
+    const url = new URL(window.location.origin + "/" + contractor_page_path);
+
+    if(fieldId) url.searchParams.set("field_id", fieldId)
+    if(requestId) url.searchParams.set("request_id", requestId)
+    if(mode) url.searchParams.set("mode", mode)
+
+    redirectSPA(url.toString());
   };
 
   const getCreateContractorButtonAccess = () => {
