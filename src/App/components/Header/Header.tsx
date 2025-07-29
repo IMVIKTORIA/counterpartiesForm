@@ -3,7 +3,7 @@ import icons from "../../shared/icons";
 import FilterButton from "../../../UIKit/Filters/FilterButton/FilterButton";
 import { selectRequestContext } from "../../stores/SelectRequestContext";
 import Button from "../../../UIKit/Button/Button";
-import Scripts from "../../shared/utils/clientScripts";
+//import Scripts from "../../shared/utils/clientScripts";
 import { redirectSPA } from "../../shared/utils/utils";
 import { checkHasFilters } from "../../../UIKit/shared/utils/utils";
 
@@ -70,6 +70,7 @@ function Header({
     if(fieldId) url.searchParams.set("field_id", fieldId)
     if(requestId) url.searchParams.set("request_id", requestId)
     if(mode) url.searchParams.set("mode", mode)
+    url.searchParams.set("is_create_contractor", "true")
 
     redirectSPA(url.toString());
   };

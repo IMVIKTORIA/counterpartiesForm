@@ -8,7 +8,7 @@ import SelectRequestFiltersForm from "../SelectRequestFiltersForm/SelectRequestF
 import SelectRequestList from "../SelectRequestList/SelectRequestList";
 import SelectButton from "./SelectButton/SelectButton";
 import { getDataFromDraft } from "../../shared/utils/utils";
-import Scripts from "../../shared/utils/clientScripts";
+//import Scripts from "../../shared/utils/clientScripts";
 import Loader from "../../../UIKit/Loader/Loader";
 /** Форма отбора обращений */
 export default function SelectRequestForm() {

@@ -6,7 +6,7 @@ import { IFilter, ObjectItem } from "../../../UIKit/Filters/FiltersTypes";
 import FilterItemDates from "../../../UIKit/Filters/FilterItems/FilterItemDates/FilterItemDates";
 import FilterItemSearch from "../../../UIKit/Filters/FilterItems/FilterItemSearch/FilterItemSearch";
 import FilterItemCategory from "../../../UIKit/Filters/FilterItems/FilterItemCategory/FilterItemCategory";
-import Scripts from "../../shared/utils/clientScripts";
+//import Scripts from "../../shared/utils/clientScripts";
 import { saveState } from "../../shared/utils/utils";
 import { applyNumbersMask, applyPhoneMask } from "../../../UIKit/shared/utils/masks";
 
