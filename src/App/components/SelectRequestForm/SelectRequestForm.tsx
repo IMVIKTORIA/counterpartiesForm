@@ -8,7 +8,7 @@ import SelectRequestFiltersForm from "../SelectRequestFiltersForm/SelectRequestF
 import SelectRequestList from "../SelectRequestList/SelectRequestList";
 import SelectButton from "./SelectButton/SelectButton";
 import { getDataFromDraft } from "../../shared/utils/utils";
-//import Scripts from "../../shared/utils/clientScripts";
+import Scripts from "../../shared/utils/clientScripts";
 import Loader from "../../../UIKit/Loader/Loader";
 /** Форма отбора обращений */
 export default function SelectRequestForm() {
@@ -53,13 +53,13 @@ export default function SelectRequestForm() {
       setIsMultipleSelect(true);
     }
 
+    if (fullname) {
+      filtersData.filters.number.value = fullname;
+      filtersData.filterStates.number = true;
+    }
+
     if (fieldId != undefined) {
       setIsSelectable(true);
-
-      if (fullname) {
-        filtersData.filters.number.value = fullname;
-        filtersData.filterStates.number = true;
-      }
 
       if (phone) {
         filtersData.filters.telephone.value = `+${phone.trim()}`;

@@ -4,7 +4,7 @@ import {
   ItemData,
   ListColumnData,
 } from "../../../UIKit/CustomList/CustomListTypes";
-//import Scripts from "../../shared/utils/clientScripts";
+import Scripts from "../../shared/utils/clientScripts";
 import {
   SelectRequestFilters,
   selectRequestContext,

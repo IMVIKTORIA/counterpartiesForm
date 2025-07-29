@@ -1,5 +1,5 @@
 import React from "react";
-//import Scripts from "../../../shared/utils/clientScripts";
+import Scripts from "../../../shared/utils/clientScripts";
 import { selectRequestContext } from "../../../stores/SelectRequestContext";
 import Button from "../../../../UIKit/Button/Button";
 import {

@@ -3,7 +3,7 @@ import icons from "../../shared/icons";
 import FilterButton from "../../../UIKit/Filters/FilterButton/FilterButton";
 import { selectRequestContext } from "../../stores/SelectRequestContext";
 import Button from "../../../UIKit/Button/Button";
-//import Scripts from "../../shared/utils/clientScripts";
+import Scripts from "../../shared/utils/clientScripts";
 import { redirectSPA } from "../../shared/utils/utils";
 import { checkHasFilters } from "../../../UIKit/shared/utils/utils";
 
