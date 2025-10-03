@@ -58,7 +58,7 @@ async function getAppeals(
 async function getRequestsCount(
   searchData?: SelectRequestFilters
 ): Promise<number> {
-  return 0;
+  return 1;
 }
 
 /** Получение статусов обращений */

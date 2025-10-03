@@ -152,6 +152,13 @@ export default function SelectButton({}: SelectButtonProps) {
     redirectSPA(redirectUrl.toString());
   }
 
+  //Выбрать контрагента для формы входящего звонка
+  const getContractorIncomigCall = async () => {
+    const selectedContractorId = data.selectedItemsIds[0];
+    // Получить телефон
+    const phone = localStorage.getItem("medpult-call-phone");
+  };
+
   // Нажатие на кнопку выбрать
   const handleSelectClick = async () => {
     const fieldId =
@@ -173,6 +180,9 @@ export default function SelectButton({}: SelectButtonProps) {
         break;
       case "medpult-worktable-call":
         await assignPhone();
+        break;
+      case "select-call-contractors":
+        await getContractorIncomigCall();
         break;
       default:
         setRequestContractor(fieldId);
