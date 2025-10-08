@@ -246,7 +246,7 @@ function CustomList<SearchDataType = any, ItemType = any>(
 
   const notFoundText = (
     <div className="custom-list__not-found">
-      Не нашли ничего, уточните критерии поиска в фильтрах
+      Ничего не найдено, уточните критерии поиска в фильтрах
     </div>
   );
 
