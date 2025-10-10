@@ -34,6 +34,7 @@ export default function SelectRequestForm() {
 
   const [isMultipleSelect, setIsMultipleSelect] = useState<boolean>(false);
   const [isSelectable, setIsSelectable] = useState<boolean>(false);
+  const [phoneContractor, setPhoneContractor] = useState<string | undefined>();
 
   // Инициализация с параметрами
   const initializeWithParams = (filtersData: SelectRequestData) => {
@@ -64,6 +65,7 @@ export default function SelectRequestForm() {
       if (phone) {
         filtersData.filters.telephone.value = `${phone.trim()}`;
         filtersData.filterStates.telephone = true;
+        setPhoneContractor(phone.trim());
       }
     }
   };
@@ -132,7 +134,7 @@ export default function SelectRequestForm() {
                 elementsCount={data.elementsCount}
                 title="Форма отбора контрагентов"
               >
-                <SelectButton />
+                <SelectButton phoneContractor={phoneContractor} />
               </Header>
             </div>
             <div

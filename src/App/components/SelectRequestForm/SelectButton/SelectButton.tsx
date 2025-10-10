@@ -8,10 +8,12 @@ import {
   setTaskDraft,
 } from "../../../shared/utils/utils";
 
-interface SelectButtonProps {}
+interface SelectButtonProps {
+  phoneContractor?: string;
+}
 
 /** Кнопка Выбрать */
-export default function SelectButton({}: SelectButtonProps) {
+export default function SelectButton({ phoneContractor }: SelectButtonProps) {
   const { data, setValue } = selectRequestContext.useContext();
 
   // Установить Страхователя договора
@@ -156,7 +158,22 @@ export default function SelectButton({}: SelectButtonProps) {
   const getContractorIncomigCall = async () => {
     const selectedContractorId = data.selectedItemsIds[0];
     // Получить телефон
-    const phone = localStorage.getItem("medpult-call-phone");
+    //const phone = localStorage.getItem("medpult-call-phone");
+    const phone =
+      phoneContractor ||
+      localStorage.getItem("medpult-call-phone") ||
+      undefined;
+
+    // Записать в контрагента новый номер телефона
+    const contractorData = await Scripts.addContractorPhone(
+      selectedContractorId,
+      phone
+    );
+
+    const link = Scripts.getIcomingCallLink();
+    const redirectUrl = new URL(window.location.origin + "/" + link);
+    if (phone) redirectUrl.searchParams.set("phone", phone);
+    redirectSPA(redirectUrl.toString());
   };
 
   // Нажатие на кнопку выбрать
