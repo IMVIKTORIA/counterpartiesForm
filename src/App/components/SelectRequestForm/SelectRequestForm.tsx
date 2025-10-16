@@ -63,8 +63,8 @@ export default function SelectRequestForm() {
       setIsSelectable(true);
 
       if (phone) {
-        filtersData.filters.telephone.value = `${phone.trim()}`;
-        filtersData.filterStates.telephone = true;
+        //filtersData.filters.telephone.value = `${phone.trim()}`;
+        //filtersData.filterStates.telephone = true;
         setPhoneContractor(phone.trim());
       }
     }

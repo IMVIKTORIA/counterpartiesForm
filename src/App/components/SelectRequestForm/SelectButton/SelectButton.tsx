@@ -173,6 +173,8 @@ export default function SelectButton({ phoneContractor }: SelectButtonProps) {
     const link = Scripts.getIcomingCallLink();
     const redirectUrl = new URL(window.location.origin + "/" + link);
     if (phone) redirectUrl.searchParams.set("phone", phone);
+    if (selectedContractorId)
+      redirectUrl.searchParams.set("contractorId", selectedContractorId);
     redirectSPA(redirectUrl.toString());
   };
 
