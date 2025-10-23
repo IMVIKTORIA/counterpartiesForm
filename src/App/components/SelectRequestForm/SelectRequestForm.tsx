@@ -5,13 +5,14 @@ import {
 } from "../../stores/SelectRequestContext";
 import Header from "../Header/Header";
 import SelectRequestFiltersForm from "../SelectRequestFiltersForm/SelectRequestFiltersForm";
-import SelectRequestList from "../SelectRequestList/SelectRequestList";
+import SelectContractorsList from "../SelectRequestList/SelectRequestList";
 import SelectButton from "./SelectButton/SelectButton";
 import { getDataFromDraft } from "../../shared/utils/utils";
 import Scripts from "../../shared/utils/clientScripts";
 import Loader from "../../../UIKit/Loader/Loader";
-/** Форма отбора обращений */
-export default function SelectRequestForm() {
+
+/** Форма отбора контрагентов */
+export default function SelectContractorsForm() {
   const [data, setValue] = selectRequestContext.useState();
 
   // Инициализация с черновиком
@@ -19,10 +20,10 @@ export default function SelectRequestForm() {
     try {
       const draftData: SelectRequestData | undefined = getDataFromDraft();
       if (draftData) {
-        for (const key of Object.keys(draftData.filters)) {
-          const resetBuffer = filtersData.filters[key].reset;
-          filtersData.filters[key] = draftData.filters[key];
-          filtersData.filters[key].reset = resetBuffer;
+        for(const key of Object.keys(draftData.filters)) {
+          const resetBuffer = (filtersData.filters as any)[key].reset;
+          (filtersData.filters as any)[key] = (draftData.filters as any)[key];
+          (filtersData.filters as any)[key].reset = resetBuffer;
         }
 
         filtersData.filterStates = draftData.filterStates;
@@ -150,11 +151,7 @@ export default function SelectRequestForm() {
               </div>
               <div className="select-request-form__list">
                 <div>
-                  <SelectRequestList
-                    isMultipleSelect={isMultipleSelect}
-                    isSelectable={isSelectable}
-                    width={listWidth}
-                  />
+                  <SelectContractorsList isMultipleSelect={isMultipleSelect} isSelectable={isSelectable}  width={listWidth} />
                 </div>
               </div>
             </div>

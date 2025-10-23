@@ -41,13 +41,20 @@ async function getAppeals(
     telephone: new ItemData({ value: "+7 912 345 67 89", info: "test" }),
     email: new ItemData({ value: "test@test.com", info: "test" }),
   };
+
   return {
     items: Array(5)
       .fill(0)
       .map((data, index) => {
         return {
           id: String(index),
-          data: new SelectRequestData(mockData),
+          data: {
+            ...new SelectRequestData(mockData),
+            isIntegration: new ItemData({
+              value: "",
+              info: Boolean(Math.random() < 0.5),
+            })
+          },
         };
       }),
     hasMore: true,

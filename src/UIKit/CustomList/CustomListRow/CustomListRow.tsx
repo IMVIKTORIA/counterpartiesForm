@@ -67,8 +67,7 @@ function CustomListRow<ItemType = any>(props: ListRowProps<ItemType>) {
 						if (data == undefined) {
 							return;
 						}
-						const columnData: ItemData<any> = data[settings.code];
-
+						const columnData: ItemData<any> = (data as any)[settings.code];
 						return (
 							<CustomListRowColumn listRef={listRef} data={columnData} {...settings} />
 						)
