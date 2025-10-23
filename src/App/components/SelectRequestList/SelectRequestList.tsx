@@ -12,6 +12,7 @@ import {
 import { SelectRequestData } from "../../shared/types";
 import utils, { redirectSPA } from "../../shared/utils/utils";
 import { localStorageDraftKey } from "../../shared/utils/constants";
+import icons from "../../shared/icons";
 
 interface SelectRequestListProps {
   /** Ширина списка */
@@ -23,8 +24,8 @@ interface SelectRequestListProps {
   isMultipleSelect: boolean
 }
 
-/** Фильтры формы отбра задач */
-export default function SelectRequestList({ width, isMultipleSelect, isSelectable }: SelectRequestListProps) {
+/** Список формы отбора контрагентов */
+export default function SelectContractorsList({ width, isMultipleSelect, isSelectable }: SelectRequestListProps) {
   const { data, setValue } = selectRequestContext.useContext();
 
   /** Установка обработчика нажатия на поиск */
@@ -50,17 +51,6 @@ export default function SelectRequestList({ width, isMultipleSelect, isSelectabl
     const link = Scripts.getContractorPageCode();
     redirectSPA(link);
   };
-
-  /**
-    // Установка обращения
-    const requestId = await Scripts.getRequestIdByTaskId(taskId);
-    utils.setRequest(requestId);
-
-    localStorage.setItem("taskId", taskId);
-
-    // Переход
-    const link = await Scripts.getRequestLink();
-    utils.redirectSPA(link);*/
 
   /** Обработчик нажатия на номер обращения */
   const onClickRequest = async (props: ItemData) => {
@@ -90,8 +80,21 @@ export default function SelectRequestList({ width, isMultipleSelect, isSelectabl
     setValue("selectedItemsIds", ids);
   };
 
+  function IntegrationColumn(data: ItemData<boolean>) {
+    const iconToShow = data?.info === true
+        ? icons.IntegrationButton
+        : null;
+    return <div>{iconToShow}</div>
+  }
+
   /** Колонки списка */
   const columns = [
+    new ListColumnData({
+      name: "",
+      code: "isIntegration",
+      fr: 0.2,
+      getCustomColumComponent: IntegrationColumn
+    }),
     new ListColumnData({
       name: data.filters.number.fieldName,
       code: data.filters.number.fieldCode,

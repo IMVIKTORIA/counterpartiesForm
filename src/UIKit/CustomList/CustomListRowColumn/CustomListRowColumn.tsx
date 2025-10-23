@@ -72,8 +72,22 @@ function CustomListRowColumn(props: ListColumnProps) {
 				? "custom-list-row-column custom-list-row-column__link"
 				: "custom-list-row-column"
 		} style={{ flex: fr }} ref={wrapperRef}>
-			<span onMouseEnter={showMore} onMouseOut={hideMore} ref={spanRef} title={isRollable ? "" : data.value} onClick={onClickColumn} className={isShowMore ? 'custom-list-row-column__more' : 'custom-list-row-column__less'}>
-				{data.value}
+			<span
+				onMouseEnter={showMore}
+				onMouseOut={hideMore}
+				ref={spanRef}
+				title={isRollable ? "" : data?.value}
+				onClick={onClickColumn}
+				className={
+				isShowMore
+					? "custom-list-row-column__more"
+					: "custom-list-row-column__less"
+				}
+			>
+				{/* Отображение кастомной колонки */}
+				{props.getCustomColumComponent && props.getCustomColumComponent(data)}
+				{/* Отображение стандартной колонки */}
+				{!props.getCustomColumComponent && data.value}
 			</span>
 		</div>
 	)

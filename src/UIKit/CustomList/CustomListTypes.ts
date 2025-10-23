@@ -37,6 +37,8 @@ export class ListColumnData {
   onClick?: (props: ItemData) => any;
   /** Разворачиваемый ли столбец */
   isRollable: boolean;
+  /** Кастомный компонент колонки */
+  getCustomColumComponent?: (props: any) => JSX.Element;
 
   constructor({
     name,
@@ -46,6 +48,7 @@ export class ListColumnData {
     isLink,
     onClick,
     isRollable,
+    getCustomColumComponent,
   }: {
     name: string;
     code: string;
@@ -54,10 +57,13 @@ export class ListColumnData {
     isLink?: boolean;
     onClick?: (props: any) => any;
     isRollable?: boolean;
+    getCustomColumComponent?: (props: any) => JSX.Element;
   }) {
     this.fr = fr ?? 1;
     this.isSortable = isSortable ?? false;
     this.isLink = isLink ?? false;
+    if (getCustomColumComponent)
+      this.getCustomColumComponent = getCustomColumComponent;
 
     if (onClick) this.onClick = onClick;
 
@@ -76,7 +82,7 @@ export class ItemData<InfoType = string> {
 
   constructor({ value, info }: { value?: string; info?: InfoType }) {
     this.value = value ?? "";
-    if (info) this.info = info;
+    if (info != undefined) this.info = info;
   }
 }
 

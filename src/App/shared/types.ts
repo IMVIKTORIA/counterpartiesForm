@@ -27,6 +27,8 @@ export class SelectRequestData {
   email?: ItemData;
   /** Полис */
   inn?: ItemData;
+  /** Получен по интеграции */
+  isIntegration?: ItemData<boolean>;
 
   constructor({
     number,
@@ -38,6 +40,7 @@ export class SelectRequestData {
     telephone,
     email,
     inn,
+    isIntegration,
   }: SelectRequestData) {
     this.number = number;
     this.type = type;
@@ -48,5 +51,6 @@ export class SelectRequestData {
     this.telephone = telephone;
     this.email = email;
     this.inn = inn;
+    this.isIntegration = isIntegration;
   }
 }
