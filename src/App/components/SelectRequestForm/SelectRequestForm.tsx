@@ -25,7 +25,7 @@ export default function SelectContractorsForm() {
           (filtersData.filters as any)[key] = (draftData.filters as any)[key];
           (filtersData.filters as any)[key].reset = resetBuffer;
         }
-        
+
         filtersData.filterStates = draftData.filterStates;
       }
     } catch (e) {
@@ -35,6 +35,7 @@ export default function SelectContractorsForm() {
 
   const [isMultipleSelect, setIsMultipleSelect] = useState<boolean>(false);
   const [isSelectable, setIsSelectable] = useState<boolean>(false);
+  const [phoneContractor, setPhoneContractor] = useState<string | undefined>();
 
   // Инициализация с параметрами
   const initializeWithParams = (filtersData: SelectRequestData) => {
@@ -63,8 +64,9 @@ export default function SelectContractorsForm() {
       setIsSelectable(true);
 
       if (phone) {
-        filtersData.filters.telephone.value = `+${phone.trim()}`;
-        filtersData.filterStates.telephone = true;
+        //filtersData.filters.telephone.value = `${phone.trim()}`;
+        //filtersData.filterStates.telephone = true;
+        setPhoneContractor(phone.trim());
       }
     }
   };
@@ -114,7 +116,7 @@ export default function SelectContractorsForm() {
   };
 
   const setContentWrapperRef = (element: HTMLDivElement) => {
-    handleResizeWrapper()
+    handleResizeWrapper();
   };
 
   return (
@@ -133,7 +135,7 @@ export default function SelectContractorsForm() {
                 elementsCount={data.elementsCount}
                 title="Форма отбора контрагентов"
               >
-                <SelectButton />
+                <SelectButton phoneContractor={phoneContractor} />
               </Header>
             </div>
             <div

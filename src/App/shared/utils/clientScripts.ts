@@ -65,7 +65,7 @@ async function getAppeals(
 async function getRequestsCount(
   searchData?: SelectRequestFilters
 ): Promise<number> {
-  return 0;
+  return 1;
 }
 
 /** Получение статусов обращений */
@@ -307,6 +307,11 @@ async function createRequestForContractor(
   return "0197c997-a1df-71ea-88e2-0c9ec3d1f792";
 }
 
+/** Получение ссылки для перехода на страницу входящего звонка */
+function getIcomingCallLink(): string {
+  return Context.data.contractor_page_path;
+}
+
 export default {
   getAppeals,
   getRequestsCount,
@@ -334,4 +339,5 @@ export default {
 
   assignInsured,
   createRequestForContractor,
+  getIcomingCallLink,
 };
