@@ -52,6 +52,8 @@ export class SelectRequestFiltersStates {
   email: boolean;
   /** ИНН */
   inn: boolean;
+  /** Показывать полные данные ЛПУ/ТОУ */
+  isShowAll?: boolean;
 
   constructor() {
     this.number = false;
@@ -63,6 +65,7 @@ export class SelectRequestFiltersStates {
     this.gender = false;
     this.birthDate = false;
     this.signImportance = false;
+    this.isShowAll = false;
   }
 }
 
@@ -86,6 +89,10 @@ export class SelectRequestFilters implements IFiltersData {
   email: StringFilter;
   /** ИНН */
   inn: StringFilter;
+  /** Показывать полные данные ЛПУ/ТОУ */
+  isShowAll?: boolean;
+  /** field = ТОУ? */
+  isTou?: boolean;
 
   constructor() {
     this.number = new StringFilter("number", "полное наименование");
@@ -97,6 +104,8 @@ export class SelectRequestFilters implements IFiltersData {
     this.telephone = new StringFilter("telephone", "телефон");
     this.email = new StringFilter("email", "email");
     this.inn = new StringFilter("inn", "ИНН");
+    this.isShowAll = false;
+    this.isTou = false;
   }
 
   reset() {

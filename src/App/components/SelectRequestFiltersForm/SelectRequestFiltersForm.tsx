@@ -2,13 +2,21 @@ import React, { useEffect, useState } from "react";
 import FiltersWrapper from "../../../UIKit/Filters/FiltersWrapper/FiltersWrapper";
 import FilterItemString from "../../../UIKit/Filters/FilterItems/FilterItemString/FilterItemString";
 import { selectRequestContext } from "../../stores/SelectRequestContext";
-import { IFilter, ObjectItem } from "../../../UIKit/Filters/FiltersTypes";
+import {
+  IFilter,
+  ObjectItem,
+  ListFilter,
+} from "../../../UIKit/Filters/FiltersTypes";
 import FilterItemDates from "../../../UIKit/Filters/FilterItems/FilterItemDates/FilterItemDates";
 import FilterItemSearch from "../../../UIKit/Filters/FilterItems/FilterItemSearch/FilterItemSearch";
 import FilterItemCategory from "../../../UIKit/Filters/FilterItems/FilterItemCategory/FilterItemCategory";
 import Scripts from "../../shared/utils/clientScripts";
 import { saveState } from "../../shared/utils/utils";
-import { applyNumbersMask, applyPhoneMask } from "../../../UIKit/shared/utils/masks";
+import {
+  applyNumbersMask,
+  applyPhoneMask,
+} from "../../../UIKit/shared/utils/masks";
+import SliderPanel from "../SelectRequestForm/SliderPanel/SliderPanel";
 
 interface SelectRequestFiltersProps {}
 
@@ -16,6 +24,18 @@ interface SelectRequestFiltersProps {}
 export default function SelectRequestFiltersForm({}: SelectRequestFiltersProps) {
   const { data, setValue } = selectRequestContext.useContext();
   const filters = data.filters;
+
+  const fieldId =
+    new URLSearchParams(window.location.search).get("field_id") ?? "";
+  const programId =
+    new URLSearchParams(window.location.search).get("programId") ?? "";
+
+  //Состояние слайдера
+  const [sliderActive, setSliderActive] = useState<boolean>(
+    programId ? false : true
+  );
+  // Флаг блокировки переключения слайдера
+  const isSliderDisabled = !programId;
 
   /** Статусы */
   const [types, setTypes] = useState<ObjectItem[]>([]);
@@ -37,7 +57,7 @@ export default function SelectRequestFiltersForm({}: SelectRequestFiltersProps) 
   /** Изменение значения конкретного фильтра */
   const changeFilterValue = (key: string, value: IFilter) => {
     const currentFilters = filters;
-    currentFilters[key] = value;
+    (currentFilters as any)[key] = value;
     setValue("filters", currentFilters);
   };
 
@@ -54,7 +74,10 @@ export default function SelectRequestFiltersForm({}: SelectRequestFiltersProps) 
   /** Обработчик нажатия на кнопку поиска */
   const searchHandler = async () => {
     // Количество отобранных элементов
-    const elementsCount = await Scripts.getRequestsCount(data.filters);
+    const elementsCount = await Scripts.getRequestsCount(
+      data.filters,
+      programId
+    );
     setValue("elementsCount", elementsCount);
 
     // Поиск
@@ -66,7 +89,7 @@ export default function SelectRequestFiltersForm({}: SelectRequestFiltersProps) 
     return (isOpen: boolean) => {
       const filterStates = data.filterStates;
 
-      filterStates[code] = isOpen;
+      (filterStates as any)[code] = isOpen;
 
       setValue("filterStates", filterStates);
     };
@@ -82,6 +105,55 @@ export default function SelectRequestFiltersForm({}: SelectRequestFiltersProps) 
   /** Ссылка на форму отбора застрахованного */
   const selectInsuredHref = Scripts.getSelectInsuredLink();
 
+  useEffect(() => {
+    if (!sorts.length) return;
+
+    let targetCode: string | null = null;
+
+    if (fieldId === "medpult-task-lpu-medical") {
+      targetCode = "018fa5b1-b73e-7816-97ff-55a13b5c6825"; // ЛПУ
+    } else if (fieldId === "medpult-task-tou-medical") {
+      targetCode = "018f9a3f-db8b-7b32-82c0-f9ad7a5614c7"; // ТОУ
+    }
+
+    if (targetCode) {
+      const targetSort = sorts.find((item) => item.code === targetCode);
+      if (targetSort) {
+        filters.sort = new ListFilter(
+          filters.sort.fieldCode,
+          filters.sort.fieldName,
+          [targetSort]
+        );
+        data.filterStates.sort = true;
+        setValue("filters", filters);
+        setValue("filterStates", data.filterStates);
+      }
+    }
+  }, [sorts, fieldId]);
+
+  useEffect(() => {
+    if (fieldId === "medpult-task-tou-medical") {
+      filters.isTou = true;
+    } else if (fieldId === "medpult-task-lpu-medical") {
+      filters.isTou = false;
+    }
+    setValue("filters", filters);
+  }, [fieldId]);
+
+  /** Синхронизация слайдера с фильтром */
+  useEffect(() => {
+    filters.isShowAll = sliderActive;
+    setValue("filters", filters);
+  }, [sliderActive]);
+
+  /** Обработчик слайдера */
+  const toggleSlider = (isActive: boolean) => {
+    if (isSliderDisabled) return;
+    setSliderActive(isActive);
+    filters.isShowAll = isActive;
+    setValue("filters", filters);
+    searchHandler();
+  };
   return (
     <FiltersWrapper
       searchHandler={searchHandler}
@@ -90,6 +162,14 @@ export default function SelectRequestFiltersForm({}: SelectRequestFiltersProps) 
         Scripts.getSelectRequestAccessSettings().searchButton < 2
       }
     >
+      {(fieldId === "medpult-task-lpu-medical" ||
+        fieldId === "medpult-task-tou-medical") && (
+        <SliderPanel
+          title="Полный перечень ЛПУ/ТОУ"
+          isVisible={sliderActive ?? false}
+          setIsVisible={toggleSlider}
+        />
+      )}
       <FilterItemString
         setIsOpenInit={setIsOpenFactory(data.filters.number.fieldCode)}
         isOpenInit={data.filterStates.number}
@@ -145,7 +225,8 @@ export default function SelectRequestFiltersForm({}: SelectRequestFiltersProps) 
         isOpenInit={data.filterStates.telephone}
         title={data.filters.telephone.fieldName}
         filterValue={data.filters.telephone}
-        setFilterValue={changeValueConstructor(data.filters.telephone.fieldCode
+        setFilterValue={changeValueConstructor(
+          data.filters.telephone.fieldCode
         )}
         maskFunction={applyPhoneMask}
         placeholder={"+7 000 000 00 00"}

@@ -19,14 +19,24 @@ interface SelectRequestListProps {
   width: number;
 
   /** Возможность выбора строки */
-  isSelectable: boolean
+  isSelectable: boolean;
   /** Множественный выбор */
-  isMultipleSelect: boolean
+  isMultipleSelect: boolean;
 }
 
 /** Список формы отбора контрагентов */
-export default function SelectContractorsList({ width, isMultipleSelect, isSelectable }: SelectRequestListProps) {
+export default function SelectContractorsList({
+  width,
+  isMultipleSelect,
+  isSelectable,
+}: SelectRequestListProps) {
   const { data, setValue } = selectRequestContext.useContext();
+
+  const fieldId =
+    new URLSearchParams(window.location.search).get("field_id") ?? "";
+
+  const programId =
+    new URLSearchParams(window.location.search).get("programId") ?? "";
 
   /** Установка обработчика нажатия на поиск */
   const setSearchHandler = (callback: () => void) => {
@@ -81,10 +91,8 @@ export default function SelectContractorsList({ width, isMultipleSelect, isSelec
   };
 
   function IntegrationColumn(data: ItemData<boolean>) {
-    const iconToShow = data?.info === true
-        ? icons.IntegrationButton
-        : null;
-    return <div>{iconToShow}</div>
+    const iconToShow = data?.info === true ? icons.IntegrationButton : null;
+    return <div>{iconToShow}</div>;
   }
 
   /** Колонки списка */
@@ -93,7 +101,7 @@ export default function SelectContractorsList({ width, isMultipleSelect, isSelec
       name: "",
       code: "isIntegration",
       fr: 0.2,
-      getCustomColumComponent: IntegrationColumn
+      getCustomColumComponent: IntegrationColumn,
     }),
     new ListColumnData({
       name: data.filters.number.fieldName,
@@ -109,6 +117,15 @@ export default function SelectContractorsList({ width, isMultipleSelect, isSelec
       fr: 1,
       isSortable: searchAccess,
     }),
+    ...(fieldId === "medpult-task-tou-medical"
+      ? [
+          new ListColumnData({
+            name: "Статус на договоре ДМС",
+            code: "statusDms",
+            fr: 1,
+          }),
+        ]
+      : []),
     new ListColumnData({
       name: data.filters.signImportance.fieldName,
       code: data.filters.signImportance.fieldCode,
@@ -147,12 +164,18 @@ export default function SelectContractorsList({ width, isMultipleSelect, isSelec
         setSearchHandler={setSearchHandler}
         searchData={data.filters}
         columnsSettings={columns}
-        getDataHandler={Scripts.getAppeals}
+        getDataHandler={(page, sortData, searchData) =>
+          Scripts.getAppeals(page, sortData, searchData, programId)
+        }
         height="70vh"
         listWidth={width}
         isSelectable={isSelectable}
         isMultipleSelect={isMultipleSelect}
         setSelectedItems={setSelectedItems}
+        isAutoSearch={
+          fieldId === "medpult-task-lpu-medical" ||
+          fieldId === "medpult-task-tou-medical"
+        }
       />
     </div>
   );
