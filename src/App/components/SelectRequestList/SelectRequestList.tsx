@@ -13,6 +13,7 @@ import { SelectRequestData } from "../../shared/types";
 import utils, { redirectSPA } from "../../shared/utils/utils";
 import { localStorageDraftKey } from "../../shared/utils/constants";
 import icons from "../../shared/icons";
+import ColumnWithValidation from "./ColumnWithValidation/ColumnWithValidation";
 
 interface SelectRequestListProps {
   /** Ширина списка */
@@ -123,6 +124,7 @@ export default function SelectContractorsList({
             name: "Статус на договоре ДМС",
             code: "statusDms",
             fr: 1,
+            getCustomColumComponent: ColumnWithValidation,
           }),
         ]
       : []),

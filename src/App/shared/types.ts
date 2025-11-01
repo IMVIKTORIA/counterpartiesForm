@@ -30,7 +30,7 @@ export class SelectRequestData {
   /** Получен по интеграции */
   isIntegration?: ItemData<boolean>;
   /** Статус на договоре ДМС */
-  statusDms?: ItemData;
+  statusDms?: DataWithValidation;
 
   constructor({
     number,
@@ -57,4 +57,12 @@ export class SelectRequestData {
     this.isIntegration = isIntegration;
     this.statusDms = statusDms;
   }
+}
+
+/** Данные со значением валидации */
+export interface DataWithValidation {
+  /** Значение */
+  value: string;
+  /** Значение валидно? */
+  isValid: boolean;
 }

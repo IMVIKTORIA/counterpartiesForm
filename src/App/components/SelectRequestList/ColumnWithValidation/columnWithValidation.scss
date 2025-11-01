@@ -1,0 +1,15 @@
+.validation-column {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  gap: 9px;
+
+  &__item {
+    overflow: "hidden";
+    text-overflow: "ellipsis";
+  }
+
+  &__item-invalid {
+    color: #ff4545;
+  }
+}

@@ -36,7 +36,7 @@ async function getAppeals(
   const mockData: SelectRequestData = {
     number: new ItemData({ value: "Иванов Иван Иванович", info: "test" }),
     type: new ItemData({ value: "Физлицо", info: "test" }),
-    statusDms: new ItemData({ value: "Новый", info: "test" }),
+    statusDms: { value: "Новый", isValid: false },
     signImportance: new ItemData({ value: "VIP", info: "test" }),
     birthDate: new ItemDataString("06.12.2023"),
     gender: new ItemData({ value: "муж", info: "test" }),
