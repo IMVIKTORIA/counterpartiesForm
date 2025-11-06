@@ -298,6 +298,8 @@ async function assignInsured(fieldId: string, contractorId: string) {
 
 //Добавить номер телефона к контрагенту
 const addContractorPhone = async (contractorId: string, phone: any) => {};
+//Добавить email к контрагенту
+const addContractorEmail = async (contractorId: string, email: any) => {};
 
 async function createRequestForContractor(
   phone: any,
@@ -308,6 +310,11 @@ async function createRequestForContractor(
 
 /** Получение ссылки для перехода на страницу входящего звонка */
 function getIcomingCallLink(): string {
+  return Context.data.contractor_page_path;
+}
+
+/** Получение ссылки для перехода на страницу входящего письма */
+function getIcomingEmailLink(): string {
   return Context.data.contractor_page_path;
 }
 
@@ -335,8 +342,10 @@ export default {
   setContractLPU,
   setContractResponsible,
   addContractorPhone,
+  addContractorEmail,
 
   assignInsured,
   createRequestForContractor,
   getIcomingCallLink,
+  getIcomingEmailLink,
 };

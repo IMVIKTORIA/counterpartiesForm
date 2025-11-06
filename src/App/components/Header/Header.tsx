@@ -64,6 +64,7 @@ function Header({
     const requestId = currentUrl.searchParams.get("request_id");
     const mode = currentUrl.searchParams.get("mode");
     const phone = currentUrl.searchParams.get("phone");
+    const email = currentUrl.searchParams.get("email");
 
     const contractor_page_path = Scripts.getContractorPageCode();
     const url = new URL(window.location.origin + "/" + contractor_page_path);
@@ -72,6 +73,7 @@ function Header({
     if (requestId) url.searchParams.set("request_id", requestId);
     if (mode) url.searchParams.set("mode", mode);
     if (phone) url.searchParams.set("phone", phone);
+    if (email) url.searchParams.set("email", email);
     url.searchParams.set("is_create_contractor", "true");
 
     redirectSPA(url.toString());

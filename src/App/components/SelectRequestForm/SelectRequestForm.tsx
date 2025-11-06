@@ -36,6 +36,7 @@ export default function SelectContractorsForm() {
   const [isMultipleSelect, setIsMultipleSelect] = useState<boolean>(false);
   const [isSelectable, setIsSelectable] = useState<boolean>(false);
   const [phoneContractor, setPhoneContractor] = useState<string | undefined>();
+  const [emailContractor, setEmailContractor] = useState<string | undefined>();
 
   // Инициализация с параметрами
   const initializeWithParams = (filtersData: SelectRequestData) => {
@@ -45,6 +46,7 @@ export default function SelectContractorsForm() {
       "fullname"
     );
     const phone = new URLSearchParams(window.location.search).get("phone");
+    const email = new URLSearchParams(window.location.search).get("email");
 
     // Множественный выбор
     const selectMultiple = new URLSearchParams(window.location.search).get(
@@ -66,6 +68,9 @@ export default function SelectContractorsForm() {
         //filtersData.filters.telephone.value = `${phone.trim()}`;
         //filtersData.filterStates.telephone = true;
         setPhoneContractor(phone.trim());
+      }
+      if (email) {
+        setEmailContractor(email.trim());
       }
     }
   };
@@ -134,7 +139,10 @@ export default function SelectContractorsForm() {
                 elementsCount={data.elementsCount}
                 title="Форма отбора контрагентов"
               >
-                <SelectButton phoneContractor={phoneContractor} />
+                <SelectButton
+                  phoneContractor={phoneContractor}
+                  emailContractor={emailContractor}
+                />
               </Header>
             </div>
             <div

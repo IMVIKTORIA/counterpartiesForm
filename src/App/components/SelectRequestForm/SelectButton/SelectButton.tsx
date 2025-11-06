@@ -10,10 +10,14 @@ import {
 
 interface SelectButtonProps {
   phoneContractor?: string;
+  emailContractor?: string;
 }
 
 /** Кнопка Выбрать */
-export default function SelectButton({ phoneContractor }: SelectButtonProps) {
+export default function SelectButton({
+  phoneContractor,
+  emailContractor,
+}: SelectButtonProps) {
   const { data, setValue } = selectRequestContext.useContext();
 
   // Установить Страхователя договора
@@ -178,6 +182,27 @@ export default function SelectButton({ phoneContractor }: SelectButtonProps) {
     redirectSPA(redirectUrl.toString());
   };
 
+  //Выбрать контрагента для формы входящего письма
+  const getContractorIncomigEmail = async () => {
+    const selectedContractorId = data.selectedItemsIds[0];
+    // Получить email
+    const email = emailContractor;
+    if (!email) return;
+
+    // Записать в контрагента новый email
+    const contractorData = await Scripts.addContractorEmail(
+      selectedContractorId,
+      email
+    );
+
+    const link = Scripts.getIcomingEmailLink();
+    const redirectUrl = new URL(window.location.origin + "/" + link);
+    if (email) redirectUrl.searchParams.set("email", email);
+    if (selectedContractorId)
+      redirectUrl.searchParams.set("contractorId", selectedContractorId);
+    redirectSPA(redirectUrl.toString());
+  };
+
   // Нажатие на кнопку выбрать
   const handleSelectClick = async () => {
     const fieldId =
@@ -202,6 +227,8 @@ export default function SelectButton({ phoneContractor }: SelectButtonProps) {
         break;
       case "select-call-contractors":
         await getContractorIncomigCall();
+      case "select-email-contractors":
+        await getContractorIncomigEmail();
         break;
       default:
         setRequestContractor(fieldId);
