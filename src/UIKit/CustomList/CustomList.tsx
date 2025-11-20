@@ -46,6 +46,7 @@ type ListProps<SearchDataType = any, ItemType = any> = {
   isMultipleSelect?: boolean;
   /** Присвоить выбранные строки */
   setSelectedItems?: (ids: string[]) => void;
+  isAutoSearch?: boolean;
 };
 
 /** Список данных в виде таблицы */
@@ -243,6 +244,12 @@ function CustomList<SearchDataType = any, ItemType = any>(
       />
     );
   });
+
+  useEffect(() => {
+    if (props.isAutoSearch) {
+      loadData().then(() => setIsSearchPerformed(true));
+    }
+  }, [props.isAutoSearch]);
 
   const notFoundText = (
     <div className="custom-list__not-found">

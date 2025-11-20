@@ -22,7 +22,8 @@ function randomDelay() {
 async function getAppeals(
   page: number,
   sortData?: SortData,
-  searchData?: SelectRequestFilters
+  searchData?: SelectRequestFilters,
+  programId?: string
 ): Promise<FetchData<SelectRequestData>> {
   await randomDelay();
 
@@ -35,6 +36,7 @@ async function getAppeals(
   const mockData: SelectRequestData = {
     number: new ItemData({ value: "Иванов Иван Иванович", info: "test" }),
     type: new ItemData({ value: "Физлицо", info: "test" }),
+    statusDms: { value: "Новый", isValid: false },
     signImportance: new ItemData({ value: "VIP", info: "test" }),
     birthDate: new ItemDataString("06.12.2023"),
     gender: new ItemData({ value: "муж", info: "test" }),
@@ -53,7 +55,7 @@ async function getAppeals(
             isIntegration: new ItemData({
               value: "",
               info: Boolean(Math.random() < 0.5),
-            })
+            }),
           },
         };
       }),
@@ -63,7 +65,8 @@ async function getAppeals(
 
 /** Получение количества задач по фильтрам */
 async function getRequestsCount(
-  searchData?: SelectRequestFilters
+  searchData?: SelectRequestFilters,
+  programId?: string
 ): Promise<number> {
   return 1;
 }
@@ -222,11 +225,7 @@ class InputDataCategory implements IInputData {
 }
 /** Получение контагента по id */
 async function getContractorById(id: string): Promise<InputDataCategory> {
-  const contractor = await Context.fields.contractors.app
-    .search()
-    .where((f) => f.__id.eq(id))
-    .first();
-  return new InputDataCategory(contractor?.data.__name, contractor?.data.__id);
+  return new InputDataCategory("", "");
 }
 
 /** Установить страхователя в договор */
@@ -299,6 +298,8 @@ async function assignInsured(fieldId: string, contractorId: string) {
 
 //Добавить номер телефона к контрагенту
 const addContractorPhone = async (contractorId: string, phone: any) => {};
+//Добавить email к контрагенту
+const addContractorEmail = async (contractorId: string, email: any) => {};
 
 async function createRequestForContractor(
   phone: any,
@@ -309,6 +310,11 @@ async function createRequestForContractor(
 
 /** Получение ссылки для перехода на страницу входящего звонка */
 function getIcomingCallLink(): string {
+  return Context.data.contractor_page_path;
+}
+
+/** Получение ссылки для перехода на страницу входящего письма */
+function getIcomingEmailLink(): string {
   return Context.data.contractor_page_path;
 }
 
@@ -336,8 +342,10 @@ export default {
   setContractLPU,
   setContractResponsible,
   addContractorPhone,
+  addContractorEmail,
 
   assignInsured,
   createRequestForContractor,
   getIcomingCallLink,
+  getIcomingEmailLink,
 };
