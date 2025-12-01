@@ -197,6 +197,11 @@ function getWortTablePageCode(): string {
 function getRequestPagePath(): string {
   return Context.data.request_page_path;
 }
+/** Получение кода страницы отбора взаимодействий */
+function getSelectInteractionPage(): string {
+  return Context.data.request_page_path;
+}
+
 /** Получение кода страницы Контрагента */
 function getContractorPageCode(): string {
   return Context.data.contractor_page_path;
@@ -296,6 +301,8 @@ async function assignInsured(fieldId: string, contractorId: string) {
   // localStorage.setItem("medpult-draft", JSON.stringify(draftObj));
 }
 
+async function assignContractor(contractorId: string) {}
+
 //Добавить номер телефона к контрагенту
 const addContractorPhone = async (contractorId: string, phone: any) => {};
 //Добавить email к контрагенту
@@ -337,6 +344,7 @@ export default {
   getTreatyPageCode,
   getWortTablePageCode,
   getRequestPagePath,
+  getSelectInteractionPage,
   getContractorPageCode,
   setContractInsurer,
   setContractLPU,
@@ -345,6 +353,7 @@ export default {
   addContractorEmail,
 
   assignInsured,
+  assignContractor,
   createRequestForContractor,
   getIcomingCallLink,
   getIcomingEmailLink,

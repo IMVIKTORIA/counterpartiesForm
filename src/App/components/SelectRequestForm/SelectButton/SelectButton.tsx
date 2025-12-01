@@ -158,6 +158,22 @@ export default function SelectButton({
     redirectSPA(redirectUrl.toString());
   }
 
+  /** Выбрать контрагента для формы отбора взаимодействий */
+  async function setInteractionContractor() {
+    // Получение выбранного контрагента из контекста
+    const selectedContractorId = data.selectedItemsIds[0];
+
+    await Scripts.assignContractor(selectedContractorId);
+
+    const link = Scripts.getSelectInteractionPage();
+    const redirectUrl = new URL(window.location.origin + "/" + link);
+
+    if (selectedContractorId)
+      redirectUrl.searchParams.set("contractorId", selectedContractorId);
+
+    redirectSPA(redirectUrl.toString());
+  }
+
   //Выбрать контрагента для формы входящего звонка
   const getContractorIncomigCall = async () => {
     const selectedContractorId = data.selectedItemsIds[0];
@@ -169,7 +185,7 @@ export default function SelectButton({
       undefined;
 
     // Записать в контрагента новый номер телефона
-    if(phone) {
+    if (phone) {
       const contractorData = await Scripts.addContractorPhone(
         selectedContractorId,
         phone
@@ -179,8 +195,9 @@ export default function SelectButton({
     const link = Scripts.getIcomingCallLink();
     const redirectUrl = new URL(window.location.origin + "/" + link);
     if (phone) redirectUrl.searchParams.set("phone", phone);
-    
-    if (selectedContractorId) redirectUrl.searchParams.set("contractorId", selectedContractorId);
+
+    if (selectedContractorId)
+      redirectUrl.searchParams.set("contractorId", selectedContractorId);
     redirectSPA(redirectUrl.toString());
   };
 
@@ -231,6 +248,9 @@ export default function SelectButton({
         await getContractorIncomigCall();
       case "select-email-contractors":
         await getContractorIncomigEmail();
+        break;
+      case "select-interaction-contractors":
+        await setInteractionContractor();
         break;
       default:
         setRequestContractor(fieldId);
