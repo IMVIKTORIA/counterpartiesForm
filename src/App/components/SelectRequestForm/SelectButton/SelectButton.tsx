@@ -174,6 +174,27 @@ export default function SelectButton({
     redirectSPA(redirectUrl.toString());
   }
 
+  /** Выбрать контрагента для списка взаимодействий рабочего стола */
+  async function setWorktableInteractionContractor() {
+    // Получение выбранного контрагента из контекста
+    const selectedContractorId = data.selectedItemsIds[0];
+
+    await Scripts.assignContractor(selectedContractorId);
+    const currentUrl = new URL(window.location.href);
+
+    const interactionId = currentUrl.searchParams.get("interaction_id");
+    const tabCode = currentUrl.searchParams.get("tab_code");
+
+    const link = Scripts.getWortTablePageCode();
+    const redirectUrl = new URL(window.location.origin + "/" + link);
+
+    if (selectedContractorId) redirectUrl.searchParams.set("contractorId", selectedContractorId);
+    if (tabCode) redirectUrl.searchParams.set("tab_code", tabCode);
+    if (interactionId) redirectUrl.searchParams.set("interaction_id", interactionId);
+
+    redirectSPA(redirectUrl.toString());
+  }
+
   //Выбрать контрагента для формы входящего звонка
   const getContractorIncomigCall = async () => {
     const selectedContractorId = data.selectedItemsIds[0];
@@ -251,6 +272,9 @@ export default function SelectButton({
         break;
       case "select-interaction-contractors":
         await setInteractionContractor();
+        break;
+      case "worktable-send-email":
+        await setWorktableInteractionContractor();
         break;
       default:
         setRequestContractor(fieldId);
