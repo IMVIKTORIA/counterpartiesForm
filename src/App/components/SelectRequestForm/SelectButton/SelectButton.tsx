@@ -11,12 +11,14 @@ import {
 interface SelectButtonProps {
   phoneContractor?: string;
   emailContractor?: string;
+  interactionId?: string;
 }
 
 /** Кнопка Выбрать */
 export default function SelectButton({
   phoneContractor,
   emailContractor,
+  interactionId,
 }: SelectButtonProps) {
   const { data, setValue } = selectRequestContext.useContext();
 
@@ -163,13 +165,17 @@ export default function SelectButton({
     // Получение выбранного контрагента из контекста
     const selectedContractorId = data.selectedItemsIds[0];
 
-    await Scripts.assignContractor(selectedContractorId);
+    const currentUrl = new URL(window.location.href);
+
+    const interactionId = currentUrl.searchParams.get("interaction_id");
 
     const link = Scripts.getSelectInteractionPage();
     const redirectUrl = new URL(window.location.origin + "/" + link);
 
     if (selectedContractorId)
       redirectUrl.searchParams.set("contractorId", selectedContractorId);
+    if (interactionId)
+      redirectUrl.searchParams.set("interaction_id", interactionId);
 
     redirectSPA(redirectUrl.toString());
   }
@@ -188,9 +194,11 @@ export default function SelectButton({
     const link = Scripts.getWortTablePageCode();
     const redirectUrl = new URL(window.location.origin + "/" + link);
 
-    if (selectedContractorId) redirectUrl.searchParams.set("contractorId", selectedContractorId);
+    if (selectedContractorId)
+      redirectUrl.searchParams.set("contractorId", selectedContractorId);
     if (tabCode) redirectUrl.searchParams.set("tab_code", tabCode);
-    if (interactionId) redirectUrl.searchParams.set("interaction_id", interactionId);
+    if (interactionId)
+      redirectUrl.searchParams.set("interaction_id", interactionId);
 
     redirectSPA(redirectUrl.toString());
   }
@@ -229,6 +237,10 @@ export default function SelectButton({
     const email = emailContractor;
     if (!email) return;
 
+    //Получить id взаимодействия
+    const intId = interactionId;
+    if (!intId) return;
+
     // Записать в контрагента новый email
     const contractorData = await Scripts.addContractorEmail(
       selectedContractorId,
@@ -238,6 +250,7 @@ export default function SelectButton({
     const link = Scripts.getIcomingEmailLink();
     const redirectUrl = new URL(window.location.origin + "/" + link);
     if (email) redirectUrl.searchParams.set("email", email);
+    if (intId) redirectUrl.searchParams.set("interactionId", intId);
     if (selectedContractorId)
       redirectUrl.searchParams.set("contractorId", selectedContractorId);
     redirectSPA(redirectUrl.toString());
