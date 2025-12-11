@@ -232,17 +232,14 @@ export default function SelectButton({
 
   //Выбрать контрагента для формы входящего письма
   const getContractorIncomigEmail = async () => {
+    const currentUrl = new URL(window.location.href);
+    const interactionId = currentUrl.searchParams.get("interactionId");
+
     const selectedContractorId = data.selectedItemsIds[0];
     // Получить email
     const email = emailContractor;
-    if (!email) return;
-
-    //Получить id взаимодействия
-    const intId = interactionId;
-    if (!intId) return;
-
     // Записать в контрагента новый email
-    const contractorData = await Scripts.addContractorEmail(
+    if (email) await Scripts.addContractorEmail(
       selectedContractorId,
       email
     );
@@ -250,9 +247,8 @@ export default function SelectButton({
     const link = Scripts.getIcomingEmailLink();
     const redirectUrl = new URL(window.location.origin + "/" + link);
     if (email) redirectUrl.searchParams.set("email", email);
-    if (intId) redirectUrl.searchParams.set("interactionId", intId);
-    if (selectedContractorId)
-      redirectUrl.searchParams.set("contractorId", selectedContractorId);
+    if (selectedContractorId) redirectUrl.searchParams.set("contractorId", selectedContractorId);
+    if (interactionId) redirectUrl.searchParams.set("interactionId", interactionId);
     redirectSPA(redirectUrl.toString());
   };
 
