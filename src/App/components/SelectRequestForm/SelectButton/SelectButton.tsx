@@ -276,6 +276,7 @@ export default function SelectButton({
         break;
       case "select-call-contractors":
         await getContractorIncomigCall();
+        break;
       case "select-email-contractors":
         await getContractorIncomigEmail();
         break;
