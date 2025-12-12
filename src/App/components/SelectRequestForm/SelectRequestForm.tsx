@@ -21,6 +21,8 @@ export default function SelectContractorsForm() {
       const draftData: SelectRequestData | undefined = getDataFromDraft();
       if (draftData) {
         for (const key of Object.keys(draftData.filters)) {
+          if(typeof (filtersData.filters as any)[key] != 'object') continue;
+          
           const resetBuffer = (filtersData.filters as any)[key].reset;
           (filtersData.filters as any)[key] = (draftData.filters as any)[key];
           (filtersData.filters as any)[key].reset = resetBuffer;
