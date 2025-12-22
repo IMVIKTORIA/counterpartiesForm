@@ -120,12 +120,17 @@ export default function SelectButton({
     const url = new URL(window.location.href);
     const requestId = url.searchParams.get("request_id");
     const taskId = url.searchParams.get("task_id");
+    const interactionId = url.searchParams.get("interaction_id");
 
     const redirectUrl = new URL(
       window.location.origin + "/" + request_page_path
     );
     if (requestId) redirectUrl.searchParams.set("request_id", requestId);
     if (taskId) redirectUrl.searchParams.set("task_id", taskId);
+    if (interactionId) {
+      redirectUrl.searchParams.set("interaction_id", interactionId);
+      redirectUrl.searchParams.set("return", "true");
+    }
     redirectSPA(redirectUrl.toString());
   };
 
@@ -239,16 +244,15 @@ export default function SelectButton({
     // Получить email
     const email = emailContractor;
     // Записать в контрагента новый email
-    if (email) await Scripts.addContractorEmail(
-      selectedContractorId,
-      email
-    );
+    if (email) await Scripts.addContractorEmail(selectedContractorId, email);
 
     const link = Scripts.getIcomingEmailLink();
     const redirectUrl = new URL(window.location.origin + "/" + link);
     if (email) redirectUrl.searchParams.set("email", email);
-    if (selectedContractorId) redirectUrl.searchParams.set("contractorId", selectedContractorId);
-    if (interactionId) redirectUrl.searchParams.set("interactionId", interactionId);
+    if (selectedContractorId)
+      redirectUrl.searchParams.set("contractorId", selectedContractorId);
+    if (interactionId)
+      redirectUrl.searchParams.set("interactionId", interactionId);
     redirectSPA(redirectUrl.toString());
   };
 
