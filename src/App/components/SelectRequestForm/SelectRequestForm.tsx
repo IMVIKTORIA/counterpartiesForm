@@ -21,8 +21,8 @@ export default function SelectContractorsForm() {
       const draftData: SelectRequestData | undefined = getDataFromDraft();
       if (draftData) {
         for (const key of Object.keys(draftData.filters)) {
-          if(typeof (filtersData.filters as any)[key] != 'object') continue;
-          
+          if (typeof (filtersData.filters as any)[key] != "object") continue;
+
           const resetBuffer = (filtersData.filters as any)[key].reset;
           (filtersData.filters as any)[key] = (draftData.filters as any)[key];
           (filtersData.filters as any)[key].reset = resetBuffer;
@@ -109,10 +109,17 @@ export default function SelectContractorsForm() {
   const toggleShowFilters = () => setIsShowFilters(!isShowFilters);
 
   // Ширина списка
-  const [listWidth, setListWidth] = useState<number>(0);
+  const [listWidth, setListWidth] = useState(0);
+  const contentWrapperRef = useRef<HTMLDivElement>(null);
 
-  // Назначение обработчиков событий
   useEffect(() => {
+    const handleResizeWrapper = () => {
+      const width =
+        contentWrapperRef.current?.getBoundingClientRect().width ?? 0;
+
+      setListWidth(width);
+    };
+
     handleResizeWrapper();
     window.addEventListener("resize", handleResizeWrapper);
 
@@ -120,17 +127,6 @@ export default function SelectContractorsForm() {
       window.removeEventListener("resize", handleResizeWrapper);
     };
   }, []);
-
-  // Обработчик изменения размера
-  const handleResizeWrapper = () => {
-    const element = document.querySelector(".select-request-form__content");
-    const width = element?.getBoundingClientRect().width ?? 0;
-    setListWidth(width);
-  };
-
-  const setContentWrapperRef = (element: HTMLDivElement) => {
-    handleResizeWrapper();
-  };
 
   return (
     <selectRequestContext.Provider value={{ data, setValue }}>
@@ -157,7 +153,7 @@ export default function SelectContractorsForm() {
             </div>
             <div
               className="select-request-form__content"
-              ref={setContentWrapperRef}
+              ref={contentWrapperRef}
             >
               <div
                 className={`select-request-form__filters${

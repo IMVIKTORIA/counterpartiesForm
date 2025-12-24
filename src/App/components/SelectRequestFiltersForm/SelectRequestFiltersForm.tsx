@@ -105,41 +105,6 @@ export default function SelectRequestFiltersForm({}: SelectRequestFiltersProps) 
   /** Ссылка на форму отбора застрахованного */
   const selectInsuredHref = Scripts.getSelectInsuredLink();
 
-  // useEffect(() => {
-  //   if (!sorts.length) return;
-
-  //   let targetCode: string | null = null;
-
-  //   if (fieldId === "medpult-task-lpu-medical") {
-  //     targetCode = "018fa5b1-b73e-7816-97ff-55a13b5c6825"; // ЛПУ
-  //   } else if (fieldId === "medpult-task-tou-medical") {
-  //     targetCode = "018f9a3f-db8b-7b32-82c0-f9ad7a5614c7"; // ТОУ
-  //   }
-
-  //   if (targetCode) {
-  //     const targetSort = sorts.find((item) => item.code === targetCode);
-  //     if (targetSort) {
-  //       filters.sort = new ListFilter(
-  //         filters.sort.fieldCode,
-  //         filters.sort.fieldName,
-  //         [targetSort]
-  //       );
-  //       data.filterStates.sort = true;
-  //       setValue("filters", filters);
-  //       setValue("filterStates", data.filterStates);
-  //     }
-  //   }
-  // }, [sorts, fieldId]);
-
-  // useEffect(() => {
-  //   if (fieldId === "medpult-task-tou-medical") {
-  //     filters.isTou = true;
-  //   } else if (fieldId === "medpult-task-lpu-medical") {
-  //     filters.isTou = false;
-  //   }
-  //   setValue("filters", filters);
-  // }, [fieldId]);
-
   /** Синхронизация слайдера с фильтром */
   useEffect(() => {
     filters.isShowAll = sliderActive;
